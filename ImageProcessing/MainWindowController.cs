@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using System.Drawing;
+using System.Windows.Media;
+using System.IO;
 
 namespace ImageProcessing
 {
@@ -15,6 +18,8 @@ namespace ImageProcessing
     {
         public ICommand LoadImageCommand { get; private set; }
         public ICommand SaveImageCommand { get; private set; }
+        public ICommand IncreaseBrightnessCommand { get; private set; }
+        public ICommand DecreaseBrightnessCommand { get; private set; }
 
         public BitmapImage SelectedImage { get; set; }
         public ObservableCollection<BitmapImage> Images { get; private set; } = new ObservableCollection<BitmapImage>();
@@ -23,6 +28,31 @@ namespace ImageProcessing
         {
             LoadImageCommand = new RelayCommand(x => LoadImage());
             SaveImageCommand = new RelayCommand(x => SaveImage());
+            IncreaseBrightnessCommand = new RelayCommand(x => ChangeBrightness("Increase"));
+            DecreaseBrightnessCommand = new RelayCommand(x => ChangeBrightness("Decrease"));
+        }
+
+        private void ChangeBrightness(String operationType)
+        {
+            int operationValue = 0;
+
+            if(operationType == "Increase" && SelectedImage != null)
+            {
+                operationValue = 1;
+            }else if(operationType == "Decrease" && SelectedImage != null)
+            {
+                operationValue = -1;
+            }
+
+            int stride = (int)SelectedImage.PixelWidth * (SelectedImage.Format.BitsPerPixel / 8);
+            byte[] pixels = new byte[(int)SelectedImage.PixelHeight * stride];
+
+            SelectedImage.CopyPixels(pixels, stride, 0);
+
+            for (int i = 0; i < pixels.Length; ++i)
+            {
+                pixels[i] = (byte)(pixels[i] + operationValue);
+            }
         }
 
         private void LoadImage()
@@ -44,5 +74,6 @@ namespace ImageProcessing
                 encoder.Save(fileStream);
             }
         }
+
     }
 }
