@@ -6,6 +6,8 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.IO;
 using ImageProcessingLogic;
+using System.Drawing.Imaging;
+using System.Windows.Media;
 
 namespace ImageProcessing
 {
@@ -33,30 +35,30 @@ namespace ImageProcessing
             SaveImageCommand = new RelayCommand(x => SaveImage(), x => SelectedImage != null);
             IncreaseBrightnessCommand = new RelayCommand(x => ChangeBrightness(BrightnessChange), x => SelectedImage != null);
             DecreaseBrightnessCommand = new RelayCommand(x => ChangeBrightness(-BrightnessChange), x => SelectedImage != null);
-            IncreaseContrastCommand = new RelayCommand(x => ChangeContrast(ContrastChange, "increase"), x => SelectedImage != null);
-            DecreaseContrastCommand = new RelayCommand(x => ChangeContrast(ContrastChange, "decrease"), x => SelectedImage != null);
+            IncreaseContrastCommand = new RelayCommand(x => ChangeContrast(ContrastChange, ContrastType.Increase), x => SelectedImage != null);
+            DecreaseContrastCommand = new RelayCommand(x => ChangeContrast(ContrastChange, ContrastType.Decrease), x => SelectedImage != null);
             NegativeCommand = new RelayCommand(x => ChangeNegative(), x => SelectedImage != null);
             ArithmeticFilterCommand = new RelayCommand(x => ArithmeticFilter(MaskSize), x => SelectedImage != null);
         }
 
         private void ArithmeticFilter(int maskSize)
         {
-            ImageOperations.ArithmeticFilter(SelectedImage.Bitmap, SelectedImage.Bitmap.Format.BitsPerPixel / 8, maskSize);
+            ImageOperations.ArithmeticFilter(SelectedImage.Bitmap, maskSize);
         }
 
         private void ChangeNegative()
         {
-            ImageOperations.ChangeNegative(SelectedImage.Bitmap, SelectedImage.Bitmap.Format.BitsPerPixel / 8);
+            ImageOperations.ChangeNegative(SelectedImage.Bitmap);
         }
 
-        private void ChangeContrast(int contrastChange, String contrastType)
+        private void ChangeContrast(int contrastChange, ContrastType contrastType)
         {
-            ImageOperations.ChangeContrast(SelectedImage.Bitmap, contrastChange, SelectedImage.Bitmap.Format.BitsPerPixel / 8, contrastType);
+            ImageOperations.ChangeContrast(SelectedImage.Bitmap, contrastChange, contrastType);
         }
 
         private void ChangeBrightness(int brightnessChange)
         {
-            ImageOperations.ChangeBrightness(SelectedImage.Bitmap, brightnessChange, SelectedImage.Bitmap.Format.BitsPerPixel/8);
+            ImageOperations.ChangeBrightness(SelectedImage.Bitmap, brightnessChange);
         }
 
         private void LoadImage()
@@ -69,6 +71,12 @@ namespace ImageProcessing
 
             BitmapImage bitmapImage = new BitmapImage(new Uri(dlg.FileName));
             WriteableBitmap writeableBitmap = new WriteableBitmap(bitmapImage);
+
+            if (writeableBitmap.Format != PixelFormats.Bgra32)
+            {
+                writeableBitmap = new WriteableBitmap(new FormatConvertedBitmap(writeableBitmap, PixelFormats.Bgra32, null, 0));
+            }
+
             Images.Add(new ImageAbstraction(writeableBitmap, bitmapImage.UriSource.Segments.Last()));
         }
 

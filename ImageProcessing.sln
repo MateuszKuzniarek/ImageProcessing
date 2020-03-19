@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessingView", "ImageProcessing\ImageProcessingView.csproj", "{0771E965-D14E-447C-A07A-EF80871E65F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessingLogic", "ImageProcessingLogic2\ImageProcessingLogic.csproj", "{097E22EA-289A-4A7B-B163-BB0DAEF0282C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessingLogic", "ImageProcessingLogic\ImageProcessingLogic.csproj", "{097E22EA-289A-4A7B-B163-BB0DAEF0282C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
