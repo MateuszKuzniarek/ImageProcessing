@@ -1,16 +1,11 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using System.Drawing;
-using System.Windows.Media;
 using System.IO;
+using ImageProcessingLogic;
 
 namespace ImageProcessing
 {
@@ -21,55 +16,50 @@ namespace ImageProcessing
         public ICommand IncreaseBrightnessCommand { get; private set; }
         public ICommand DecreaseBrightnessCommand { get; private set; }
 
-        public BitmapImage SelectedImage { get; set; }
-        public ObservableCollection<BitmapImage> Images { get; private set; } = new ObservableCollection<BitmapImage>();
+        public ImageAbstraction SelectedImage { get; set; }
+        public ObservableCollection<ImageAbstraction> Images { get; set; } = new ObservableCollection<ImageAbstraction>();
+        public int BrightnessChange { get; set; } = 1;
 
         public MainWindowController()
         {
             LoadImageCommand = new RelayCommand(x => LoadImage());
-            SaveImageCommand = new RelayCommand(x => SaveImage());
-            IncreaseBrightnessCommand = new RelayCommand(x => ChangeBrightness("Increase"));
-            DecreaseBrightnessCommand = new RelayCommand(x => ChangeBrightness("Decrease"));
+            SaveImageCommand = new RelayCommand(x => SaveImage(), x => SelectedImage != null);
+            IncreaseBrightnessCommand = new RelayCommand(x => ChangeBrightness(BrightnessChange), x => SelectedImage != null);
+            DecreaseBrightnessCommand = new RelayCommand(x => ChangeBrightness(-BrightnessChange), x => SelectedImage != null);
         }
 
-        private void ChangeBrightness(String operationType)
+        private void ChangeBrightness(int brightnessChange)
         {
-            int operationValue = 0;
-
-            if(operationType == "Increase" && SelectedImage != null)
-            {
-                operationValue = 1;
-            }else if(operationType == "Decrease" && SelectedImage != null)
-            {
-                operationValue = -1;
-            }
-
-            int stride = (int)SelectedImage.PixelWidth * (SelectedImage.Format.BitsPerPixel / 8);
-            byte[] pixels = new byte[(int)SelectedImage.PixelHeight * stride];
-
-            SelectedImage.CopyPixels(pixels, stride, 0);
-
-            for (int i = 0; i < pixels.Length; ++i)
-            {
-                pixels[i] = (byte)(pixels[i] + operationValue);
-            }
+            ImageOperations.ChangeBrightness(SelectedImage.Bitmap, brightnessChange);
         }
 
         private void LoadImage()
         {
             OpenFileDialog dlg = new OpenFileDialog();
-            if (dlg.ShowDialog() == false) return;
-            Images.Add(new BitmapImage(new Uri(dlg.FileName)));
+            if (dlg.ShowDialog() == false)
+            {
+                return;
+            }
+
+            BitmapImage bitmapImage = new BitmapImage(new Uri(dlg.FileName));
+            WriteableBitmap writeableBitmap = new WriteableBitmap(bitmapImage);
+            Images.Add(new ImageAbstraction(writeableBitmap, bitmapImage.UriSource.Segments.Last()));
         }
 
         private void SaveImage()
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Bitmap Image(.bmp)| *.bmp";
-            if (saveFileDialog.ShowDialog() == false) return; BitmapEncoder encoder = new PngBitmapEncoder();
+            if (saveFileDialog.ShowDialog() == false)
+            {
+                return;
+            }
 
-            encoder.Frames.Add(BitmapFrame.Create(SelectedImage));
-            using (var fileStream = new System.IO.FileStream(saveFileDialog.FileName, System.IO.FileMode.Create))
+            BitmapEncoder encoder = new PngBitmapEncoder();
+            SelectedImage.Name = new Uri(saveFileDialog.FileName).Segments.Last();
+
+            encoder.Frames.Add(BitmapFrame.Create(SelectedImage.Bitmap));
+            using (var fileStream = new FileStream(saveFileDialog.FileName, FileMode.Create))
             {
                 encoder.Save(fileStream);
             }

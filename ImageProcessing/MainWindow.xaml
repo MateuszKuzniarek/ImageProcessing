@@ -6,23 +6,20 @@
         xmlns:local="clr-namespace:ImageProcessing"
         mc:Ignorable="d"
         Title="Image Processing Ultimate 2020 Pro" Height="800" Width="1200">
-    <Window.Resources>
-        <local:UriConverter x:Key="UriConverter" />
-    </Window.Resources>
     <Window.DataContext>
         <local:MainWindowController/>
     </Window.DataContext>
     <Grid>
-        <Button Content="Load image" Command ="{Binding LoadImageCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="10,10,0,0" Click="Button_Click"/>
-        <Button Content="Save image" Command ="{Binding SaveImageCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="10,34,0,0"/>
-        <TextBlock Text="Jasność" TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="10,58,0,0"/>
-        <Button Content="+" Command="{Binding IncreaseBrightnessCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Margin="10,82,0,0"/>
-        <Button Content="-" Command="{Binding DecreaseBrightnessCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Margin="50,82,0,0"/>
-        <TabControl ItemsSource="{Binding Images}" SelectedItem="{Binding SelectedImage}" HorizontalAlignment="Left" Height="750" Margin="90,10,0,0" VerticalAlignment="Top" Width="1094">
+        <Button Content="Load image" Command ="{Binding LoadImageCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="89" Margin="10,10,0,0" Click="Button_Click"/>
+        <Button Content="Save image" Command ="{Binding SaveImageCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="89" Margin="106,10,0,0"/>
+        <TextBlock Text="Brightness" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="10,43,0,0"/>
+        <Button Content="+" Command="{Binding IncreaseBrightnessCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="173,43,0,0" Height="19"/>
+        <Button Content="-" Command="{Binding DecreaseBrightnessCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="146,43,0,0" Height="19"/>
+        <TabControl ItemsSource="{Binding Images}" SelectedItem="{Binding SelectedImage}" HorizontalAlignment="Left" Height="750" Margin="200,10,0,0" VerticalAlignment="Top" Width="980">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock>
-                        <TextBlock Text="{Binding UriSource, Converter={StaticResource UriConverter}}" />
+                        <TextBlock Text="{Binding Name}" />
                     </TextBlock>
                 </DataTemplate>
             </TabControl.ItemTemplate>
@@ -30,13 +27,13 @@
                 <DataTemplate>
                     <ScrollViewer HorizontalScrollBarVisibility="Auto">
                         <Grid Background="#FFE5E5E5">
-                            <Image Source="{Binding}" Stretch="None"/>
+                            <Image Source="{Binding Bitmap}" Stretch="None"/>
                         </Grid>
                     </ScrollViewer>
                 </DataTemplate>
 
             </TabControl.ContentTemplate>
         </TabControl>
-
+        <TextBox Text="{Binding BrightnessChange}" HorizontalAlignment="Left" Height="18" Margin="106,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
     </Grid>
 </Window>
