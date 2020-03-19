@@ -15,10 +15,17 @@ namespace ImageProcessing
         public ICommand SaveImageCommand { get; private set; }
         public ICommand IncreaseBrightnessCommand { get; private set; }
         public ICommand DecreaseBrightnessCommand { get; private set; }
+        public ICommand IncreaseContrastCommand { get; private set; }
+        public ICommand DecreaseContrastCommand { get; private set; }
+        public ICommand NegativeCommand { get; private set; }
+        public ICommand ArithmeticFilterCommand { get; private set; }
 
         public ImageAbstraction SelectedImage { get; set; }
         public ObservableCollection<ImageAbstraction> Images { get; set; } = new ObservableCollection<ImageAbstraction>();
         public int BrightnessChange { get; set; } = 1;
+        public int ContrastChange { get; set; } = 1;
+        public int NegativeChange { get; set; } = 1;
+        public int MaskSize { get; set; } = 3;
 
         public MainWindowController()
         {
@@ -26,11 +33,30 @@ namespace ImageProcessing
             SaveImageCommand = new RelayCommand(x => SaveImage(), x => SelectedImage != null);
             IncreaseBrightnessCommand = new RelayCommand(x => ChangeBrightness(BrightnessChange), x => SelectedImage != null);
             DecreaseBrightnessCommand = new RelayCommand(x => ChangeBrightness(-BrightnessChange), x => SelectedImage != null);
+            IncreaseContrastCommand = new RelayCommand(x => ChangeContrast(ContrastChange, "increase"), x => SelectedImage != null);
+            DecreaseContrastCommand = new RelayCommand(x => ChangeContrast(ContrastChange, "decrease"), x => SelectedImage != null);
+            NegativeCommand = new RelayCommand(x => ChangeNegative(), x => SelectedImage != null);
+            ArithmeticFilterCommand = new RelayCommand(x => ArithmeticFilter(MaskSize), x => SelectedImage != null);
+        }
+
+        private void ArithmeticFilter(int maskSize)
+        {
+            ImageOperations.ArithmeticFilter(SelectedImage.Bitmap, SelectedImage.Bitmap.Format.BitsPerPixel / 8, maskSize);
+        }
+
+        private void ChangeNegative()
+        {
+            ImageOperations.ChangeNegative(SelectedImage.Bitmap, SelectedImage.Bitmap.Format.BitsPerPixel / 8);
+        }
+
+        private void ChangeContrast(int contrastChange, String contrastType)
+        {
+            ImageOperations.ChangeContrast(SelectedImage.Bitmap, contrastChange, SelectedImage.Bitmap.Format.BitsPerPixel / 8, contrastType);
         }
 
         private void ChangeBrightness(int brightnessChange)
         {
-            ImageOperations.ChangeBrightness(SelectedImage.Bitmap, brightnessChange);
+            ImageOperations.ChangeBrightness(SelectedImage.Bitmap, brightnessChange, SelectedImage.Bitmap.Format.BitsPerPixel/8);
         }
 
         private void LoadImage()

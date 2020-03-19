@@ -15,6 +15,15 @@
         <TextBlock Text="Brightness" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="10,43,0,0"/>
         <Button Content="+" Command="{Binding IncreaseBrightnessCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="173,43,0,0" Height="19"/>
         <Button Content="-" Command="{Binding DecreaseBrightnessCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="146,43,0,0" Height="19"/>
+        <TextBlock Text="Contrast" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="10,83,0,0"/>
+        <TextBox Text="{Binding ContrastChange}" HorizontalAlignment="Left" Height="18" Margin="106,84,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
+        <Button Content="+" Command="{Binding IncreaseContrastCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="173,83,0,0" Height="19"/>
+        <Button Content="-" Command="{Binding DecreaseContrastCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="146,83,0,0" Height="19"/>
+        <TextBlock Text="Negative" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="10,123,0,0"/>
+        <Button Content="Change" Command="{Binding NegativeCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="49" Margin="146,123,0,0" Height="19"/>
+        <TextBlock Text="Arithmetic filter" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="10,163,0,0"/>
+        <TextBox Text="{Binding MaskSize}" HorizontalAlignment="Left" Height="18" Margin="106,164,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
+        <Button Content="Change" Command="{Binding ArithmeticFilterCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="49" Margin="146,163,0,0" Height="19"/>
         <TabControl ItemsSource="{Binding Images}" SelectedItem="{Binding SelectedImage}" HorizontalAlignment="Left" Height="750" Margin="200,10,0,0" VerticalAlignment="Top" Width="980">
             <TabControl.ItemTemplate>
                 <DataTemplate>
