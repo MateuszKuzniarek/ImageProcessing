@@ -44,5 +44,6 @@
             </TabControl.ContentTemplate>
         </TabControl>
         <TextBox Text="{Binding BrightnessChange}" HorizontalAlignment="Left" Height="18" Margin="106,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
+        <Button Content="Display Histogram" Command="{Binding HistogramCommand}" HorizontalAlignment="Left" Margin="10,741,0,0" VerticalAlignment="Top" Width="185"/>
     </Grid>
 </Window>

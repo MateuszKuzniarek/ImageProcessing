@@ -21,6 +21,7 @@ namespace ImageProcessing
         public ICommand DecreaseContrastCommand { get; private set; }
         public ICommand NegativeCommand { get; private set; }
         public ICommand ArithmeticFilterCommand { get; private set; }
+        public ICommand HistogramCommand { get; private set; }
 
         public ImageAbstraction SelectedImage { get; set; }
         public ObservableCollection<ImageAbstraction> Images { get; set; } = new ObservableCollection<ImageAbstraction>();
@@ -37,6 +38,7 @@ namespace ImageProcessing
             DecreaseBrightnessCommand = new RelayCommand(x => ChangeBrightness(-BrightnessChange), x => SelectedImage != null);
             IncreaseContrastCommand = new RelayCommand(x => ChangeContrast(ContrastChange, ContrastType.Increase), x => SelectedImage != null);
             DecreaseContrastCommand = new RelayCommand(x => ChangeContrast(ContrastChange, ContrastType.Decrease), x => SelectedImage != null);
+            HistogramCommand = new RelayCommand(x => DisplayHistogram(), x => SelectedImage != null);
             NegativeCommand = new RelayCommand(x => ChangeNegative(), x => SelectedImage != null);
             ArithmeticFilterCommand = new RelayCommand(x => ArithmeticFilter(MaskSize), x => SelectedImage != null);
         }
@@ -59,6 +61,12 @@ namespace ImageProcessing
         private void ChangeBrightness(int brightnessChange)
         {
             ImageOperations.ChangeBrightness(SelectedImage.Bitmap, brightnessChange);
+        }
+
+        private void DisplayHistogram()
+        {
+            HistogramWindow histogramWindow = new HistogramWindow(SelectedImage.Bitmap);
+            histogramWindow.Show();
         }
 
         private void LoadImage()

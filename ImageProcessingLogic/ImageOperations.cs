@@ -114,5 +114,30 @@ namespace ImageProcessingLogic
             image.AddDirtyRect(new Int32Rect(0, 0, image.PixelWidth, image.PixelHeight));
             image.Unlock();
         }
+
+        public unsafe static HistogramData GenerateHistogramData(WriteableBitmap image)
+        {
+            HistogramData result = new HistogramData();
+
+            byte* imagePointer = (byte*)image.BackBuffer;
+            int stride = image.BackBufferStride;
+
+            for (int i = 0; i < image.PixelHeight; i++)
+            {
+                for (int j = 0; j < image.PixelWidth; j++)
+                {
+                    int index = i * stride + j * bytesPerPixel;
+                    result.BlueData[imagePointer[index]]++;
+
+                    index++;
+                    result.GreenData[imagePointer[index]]++;
+
+                    index++;
+                    result.RedData[imagePointer[index]]++;
+                }
+            }
+
+            return result;
+        }
     }
 }
