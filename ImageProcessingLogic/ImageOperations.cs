@@ -9,6 +9,61 @@ namespace ImageProcessingLogic
     {
         private const int bytesPerPixel = 4;
         private const int numberOfColors = 3;
+        public static int[,] maskArray;
+
+        public unsafe static void RosenfeldOperator(WriteableBitmap image, int R)
+        {
+            image.Lock();
+            byte* imagePointer = (byte*)image.BackBuffer;
+            int memorySize = image.BackBufferStride * image.PixelHeight;
+            byte[] allocatedMemory = new byte[memorySize];
+            fixed (byte* imageCopyPointer = &allocatedMemory[0])
+            {
+                Buffer.MemoryCopy(imagePointer, imageCopyPointer, memorySize, memorySize);
+                int stride = image.BackBufferStride;
+
+                for (int i = 0; i < image.PixelHeight; i++)
+                {
+                    for (int j = 0; j < image.PixelWidth - (R - 1); j++)
+                    {
+                        for (int k = 0; k < numberOfColors; k++)
+                        {
+                            int sum1 = 0;
+                            for (int a = 1; a <= R; a++)
+                            {
+                                int xCoordinate = i;
+                                int yCoordinate = j + a -1;
+                                int pixelValue = imageCopyPointer[xCoordinate * stride + yCoordinate * bytesPerPixel + k];
+                                sum1 += pixelValue;
+                            }
+
+                            int sum2 = 0;
+                            for (int a = 1; a <= R; a++)
+                            {
+                                int xCoordinate = i;
+                                int yCoordinate = j - a;
+                                int pixelValue = imageCopyPointer[xCoordinate * stride + yCoordinate * bytesPerPixel + k];
+                                sum2 += pixelValue;
+                            }
+
+                            int index = i * stride + j * bytesPerPixel + k;
+                            int newValue = (int)(1d/R * (sum1 - sum2));
+                            newValue = Math.Min(newValue, 255);
+                            newValue = Math.Max(newValue, 0);
+                            imagePointer[index] = (byte)newValue;
+                        }
+                    }
+                }
+            }
+
+            image.AddDirtyRect(new Int32Rect(0, 0, image.PixelWidth, image.PixelHeight));
+            image.Unlock();
+        }
+        
+        public unsafe static void CustomFilter(WriteableBitmap image)
+        {
+            ApplyMask(image, maskArray);
+        }
 
         public unsafe static void ChangeBrightness(WriteableBitmap image, int brightnessChange)
         {

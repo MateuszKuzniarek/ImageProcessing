@@ -48,6 +48,15 @@
         </TabControl>
         <TextBox Text="{Binding BrightnessChange}" HorizontalAlignment="Left" Height="19" Margin="105,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
         <Button Content="Display Histogram" Command="{Binding HistogramCommand}" HorizontalAlignment="Left" Margin="9,39,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
-        <Button Content="Modify Histogram" Command="{Binding ModifyHistogramCommand}" HorizontalAlignment="Left" Margin="10,192,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
+        <TextBlock Text="Gmin" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="20,194,0,0"/>
+        <TextBox Text="{Binding GMin}" HorizontalAlignment="Left" Height="20" Margin="54,192,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
+        <TextBlock Text="Gmax" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="110,194,0,0"/>
+        <TextBox Text="{Binding GMax}" HorizontalAlignment="Left" Height="20" Margin="144,192,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
+        <Button Content="Modify Histogram" Command="{Binding ModifyHistogramCommand}" HorizontalAlignment="Left" Margin="10,218,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
+        <Button Content="Change Mask" Command="{Binding ChangeMaskCommand}" HorizontalAlignment="Left" Margin="10,244,0,0" VerticalAlignment="Top" Width="90" RenderTransformOrigin="0.51,-2.3"/>
+        <Button Content="Custom filter" Command="{Binding CustomFilterCommand}" HorizontalAlignment="Left" Margin="105,244,0,0" VerticalAlignment="Top" Width="90" RenderTransformOrigin="0.51,-2.3"/>
+        <TextBlock Text="Rosenfeld" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="10,270,0,0"/>
+        <TextBox Text="{Binding R}" HorizontalAlignment="Left" Height="20" Margin="104,270,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
+        <Button Content="Apply" Command="{Binding RosenfeldOperatorCommand}" HorizontalAlignment="Left" Margin="145,270,0,0" VerticalAlignment="Top" Width="50" RenderTransformOrigin="0.51,-2.3"/>
     </Grid>
 </Window>

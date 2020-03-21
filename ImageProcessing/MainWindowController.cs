@@ -24,6 +24,9 @@ namespace ImageProcessing
         public ICommand MedianFilterCommand { get; private set; }
         public ICommand HistogramCommand { get; private set; }
         public ICommand ModifyHistogramCommand { get; private set; }
+        public ICommand ChangeMaskCommand { get; private set; }
+        public ICommand CustomFilterCommand { get; private set; }
+        public ICommand RosenfeldOperatorCommand { get; private set; }
 
         public ImageAbstraction SelectedImage { get; set; }
         public ObservableCollection<ImageAbstraction> Images { get; set; } = new ObservableCollection<ImageAbstraction>();
@@ -34,6 +37,7 @@ namespace ImageProcessing
         public int MedianMaskSize { get; set; } = 3;
         public int GMin { get; set; } = 50;
         public int GMax { get; set; } = 200;
+        public int R { get; set; } = 5;
 
         public MainWindowController()
         {
@@ -48,6 +52,25 @@ namespace ImageProcessing
             ArithmeticFilterCommand = new RelayCommand(x => ArithmeticFilter(ArithmeticMaskSize), x => SelectedImage != null);
             MedianFilterCommand = new RelayCommand(x => MedianFilter(MedianMaskSize), x => SelectedImage != null);
             ModifyHistogramCommand = new RelayCommand(x => ModifyHistogram(GMin, GMax), x => SelectedImage != null);
+            ChangeMaskCommand = new RelayCommand(x => ChangeMask(), x => SelectedImage != null);
+            CustomFilterCommand = new RelayCommand(x => CustomFilter(), x => (SelectedImage != null && ImageOperations.maskArray != null));
+            RosenfeldOperatorCommand = new RelayCommand(x => RosenfeldOperator(R), x => (SelectedImage != null));
+        }
+
+        private void RosenfeldOperator(int R)
+        {
+            ImageOperations.RosenfeldOperator(SelectedImage.Bitmap, R);
+        }
+
+        private void ChangeMask()
+        {
+            MaskWindow maskWindow = new MaskWindow();
+            maskWindow.Show();
+        }
+
+        private void CustomFilter()
+        {
+            ImageOperations.CustomFilter(SelectedImage.Bitmap);
         }
 
         private void ModifyHistogram(int gMin, int gMax)
