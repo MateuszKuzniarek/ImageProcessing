@@ -48,6 +48,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColorChannel.cs" />
     <Compile Include="ContrastType.cs" />
     <Compile Include="HistogramData.cs" />
     <Compile Include="ImageOperations.cs" />

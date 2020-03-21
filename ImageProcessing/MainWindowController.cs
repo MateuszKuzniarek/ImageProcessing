@@ -21,14 +21,19 @@ namespace ImageProcessing
         public ICommand DecreaseContrastCommand { get; private set; }
         public ICommand NegativeCommand { get; private set; }
         public ICommand ArithmeticFilterCommand { get; private set; }
+        public ICommand MedianFilterCommand { get; private set; }
         public ICommand HistogramCommand { get; private set; }
+        public ICommand ModifyHistogramCommand { get; private set; }
 
         public ImageAbstraction SelectedImage { get; set; }
         public ObservableCollection<ImageAbstraction> Images { get; set; } = new ObservableCollection<ImageAbstraction>();
         public int BrightnessChange { get; set; } = 1;
         public int ContrastChange { get; set; } = 1;
         public int NegativeChange { get; set; } = 1;
-        public int MaskSize { get; set; } = 3;
+        public int ArithmeticMaskSize { get; set; } = 3;
+        public int MedianMaskSize { get; set; } = 3;
+        public int GMin { get; set; } = 50;
+        public int GMax { get; set; } = 200;
 
         public MainWindowController()
         {
@@ -40,12 +45,24 @@ namespace ImageProcessing
             DecreaseContrastCommand = new RelayCommand(x => ChangeContrast(ContrastChange, ContrastType.Decrease), x => SelectedImage != null);
             HistogramCommand = new RelayCommand(x => DisplayHistogram(), x => SelectedImage != null);
             NegativeCommand = new RelayCommand(x => ChangeNegative(), x => SelectedImage != null);
-            ArithmeticFilterCommand = new RelayCommand(x => ArithmeticFilter(MaskSize), x => SelectedImage != null);
+            ArithmeticFilterCommand = new RelayCommand(x => ArithmeticFilter(ArithmeticMaskSize), x => SelectedImage != null);
+            MedianFilterCommand = new RelayCommand(x => MedianFilter(MedianMaskSize), x => SelectedImage != null);
+            ModifyHistogramCommand = new RelayCommand(x => ModifyHistogram(GMin, GMax), x => SelectedImage != null);
+        }
+
+        private void ModifyHistogram(int gMin, int gMax)
+        {
+            ImageOperations.ModifyHistogram(SelectedImage.Bitmap, gMin, gMax);
         }
 
         private void ArithmeticFilter(int maskSize)
         {
             ImageOperations.ArithmeticFilter(SelectedImage.Bitmap, maskSize);
+        }
+
+        private void MedianFilter(int maskSize)
+        {
+            ImageOperations.MedianFilter(SelectedImage.Bitmap, maskSize);
         }
 
         private void ChangeNegative()

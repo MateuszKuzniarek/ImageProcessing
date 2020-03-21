@@ -12,18 +12,21 @@
     <Grid>
         <Button Content="Load image" Command ="{Binding LoadImageCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="89" Margin="10,10,0,0" Click="Button_Click"/>
         <Button Content="Save image" Command ="{Binding SaveImageCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="89" Margin="106,10,0,0"/>
-        <TextBlock Text="Brightness" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="10,43,0,0"/>
-        <Button Content="+" Command="{Binding IncreaseBrightnessCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="173,43,0,0" Height="19"/>
-        <Button Content="-" Command="{Binding DecreaseBrightnessCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="146,43,0,0" Height="19"/>
-        <TextBlock Text="Contrast" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="10,83,0,0"/>
-        <TextBox Text="{Binding ContrastChange}" HorizontalAlignment="Left" Height="18" Margin="106,84,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
-        <Button Content="+" Command="{Binding IncreaseContrastCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="173,83,0,0" Height="19"/>
-        <Button Content="-" Command="{Binding DecreaseContrastCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="146,83,0,0" Height="19"/>
-        <TextBlock Text="Negative" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="10,123,0,0"/>
-        <Button Content="Change" Command="{Binding NegativeCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="49" Margin="146,123,0,0" Height="19"/>
-        <TextBlock Text="Arithmetic filter" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="10,163,0,0"/>
-        <TextBox Text="{Binding MaskSize}" HorizontalAlignment="Left" Height="18" Margin="106,164,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
-        <Button Content="Change" Command="{Binding ArithmeticFilterCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="49" Margin="146,163,0,0" Height="19"/>
+        <TextBlock Text="Brightness" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="9,70,0,0"/>
+        <Button Content="+" Command="{Binding IncreaseBrightnessCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="172,70,0,0" Height="19"/>
+        <Button Content="-" Command="{Binding DecreaseBrightnessCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="145,70,0,0" Height="19"/>
+        <TextBlock Text="Contrast" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="10,94,0,0"/>
+        <TextBox Text="{Binding ContrastChange}" HorizontalAlignment="Left" Height="20" Margin="105,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
+        <Button Content="+" Command="{Binding IncreaseContrastCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="173,94,0,0" Height="19"/>
+        <Button Content="-" Command="{Binding DecreaseContrastCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="145,94,0,0" Height="19"/>
+        <TextBlock Text="Negative" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="10,119,0,0"/>
+        <Button Content="Change" Command="{Binding NegativeCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="91" Margin="104,118,0,0" Height="19"/>
+        <TextBlock Text="Arithmetic filter" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="10,144,0,0"/>
+        <TextBox Text="{Binding ArithmeticMaskSize}" HorizontalAlignment="Left" Height="20" Margin="104,142,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
+        <Button Content="Apply" Command="{Binding ArithmeticFilterCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Margin="145,142,0,0" Height="19"/>
+        <TextBlock Text="Median filter" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="10,169,0,0"/>
+        <TextBox Text="{Binding MedianMaskSize}" HorizontalAlignment="Left" Height="20" Margin="104,167,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
+        <Button Content="Apply" Command="{Binding MedianFilterCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Margin="145,166,0,0" Height="21"/>
         <TabControl ItemsSource="{Binding Images}" SelectedItem="{Binding SelectedImage}" HorizontalAlignment="Left" Height="750" Margin="200,10,0,0" VerticalAlignment="Top" Width="980">
             <TabControl.ItemTemplate>
                 <DataTemplate>
@@ -43,7 +46,8 @@
 
             </TabControl.ContentTemplate>
         </TabControl>
-        <TextBox Text="{Binding BrightnessChange}" HorizontalAlignment="Left" Height="18" Margin="106,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
-        <Button Content="Display Histogram" Command="{Binding HistogramCommand}" HorizontalAlignment="Left" Margin="10,741,0,0" VerticalAlignment="Top" Width="185"/>
+        <TextBox Text="{Binding BrightnessChange}" HorizontalAlignment="Left" Height="19" Margin="105,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
+        <Button Content="Display Histogram" Command="{Binding HistogramCommand}" HorizontalAlignment="Left" Margin="9,39,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
+        <Button Content="Modify Histogram" Command="{Binding ModifyHistogramCommand}" HorizontalAlignment="Left" Margin="10,192,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
     </Grid>
 </Window>
