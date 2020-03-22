@@ -8,10 +8,11 @@ using System.IO;
 using ImageProcessingLogic;
 using System.Drawing.Imaging;
 using System.Windows.Media;
+using System.ComponentModel;
 
 namespace ImageProcessing
 {
-    public class MainWindowController
+    public class MainWindowController : IDataErrorInfo
     {
         public ICommand LoadImageCommand { get; private set; }
         public ICommand SaveImageCommand { get; private set; }
@@ -39,6 +40,44 @@ namespace ImageProcessing
         public int GMax { get; set; } = 200;
         public int R { get; set; } = 5;
 
+        public string Error { get => null; }
+        public string this[string columnName]
+        {
+            get
+            {
+                switch (columnName)
+                {
+                    case "GMin":
+                        if (GMin < 0 || GMin > 255 || GMin > GMax)
+                        {
+                            areHistogramModificationValuesValid = false;
+                            return "Incorrect data";
+                        }
+                        else
+                        {
+                            areHistogramModificationValuesValid = true;
+                        }
+                        break;
+
+                    case "GMax":
+                        if (GMax < 0 || GMax > 255 || GMin > GMax)
+                        {
+                            areHistogramModificationValuesValid = false;
+                            return "Incorrect data";
+                        }
+                        else
+                        {
+                            areHistogramModificationValuesValid = true;
+                        }
+                        break;
+                }
+
+                return string.Empty;
+            }
+        }
+
+        private bool areHistogramModificationValuesValid = true;
+
         public MainWindowController()
         {
             LoadImageCommand = new RelayCommand(x => LoadImage());
@@ -51,7 +90,7 @@ namespace ImageProcessing
             NegativeCommand = new RelayCommand(x => ChangeNegative(), x => SelectedImage != null);
             ArithmeticFilterCommand = new RelayCommand(x => ArithmeticFilter(ArithmeticMaskSize), x => SelectedImage != null);
             MedianFilterCommand = new RelayCommand(x => MedianFilter(MedianMaskSize), x => SelectedImage != null);
-            ModifyHistogramCommand = new RelayCommand(x => ModifyHistogram(GMin, GMax), x => SelectedImage != null);
+            ModifyHistogramCommand = new RelayCommand(x => ModifyHistogram(GMin, GMax), x => SelectedImage != null && areHistogramModificationValuesValid);
             ChangeMaskCommand = new RelayCommand(x => ChangeMask(), x => SelectedImage != null);
             CustomFilterCommand = new RelayCommand(x => CustomFilter(), x => (SelectedImage != null && ImageOperations.maskArray != null));
             RosenfeldOperatorCommand = new RelayCommand(x => RosenfeldOperator(R), x => (SelectedImage != null));

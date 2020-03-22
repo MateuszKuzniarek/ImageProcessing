@@ -22,10 +22,32 @@
         <TextBlock Text="Negative" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="10,119,0,0"/>
         <Button Content="Change" Command="{Binding NegativeCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="91" Margin="104,118,0,0" Height="19"/>
         <TextBlock Text="Arithmetic filter" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="10,144,0,0"/>
-        <TextBox Text="{Binding ArithmeticMaskSize}" HorizontalAlignment="Left" Height="20" Margin="104,142,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
+        <TextBox HorizontalAlignment="Left" Height="20" Margin="104,142,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35">
+            <TextBox.Text>
+                <Binding Path="ArithmeticMaskSize"
+                        ValidatesOnNotifyDataErrors="True"
+                        ValidatesOnDataErrors="True"
+                        NotifyOnValidationError="True">
+                    <Binding.ValidationRules>
+                        <local:MaskSizeValidationRule ValidatesOnTargetUpdated="True" />
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
         <Button Content="Apply" Command="{Binding ArithmeticFilterCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Margin="145,142,0,0" Height="19"/>
         <TextBlock Text="Median filter" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="10,169,0,0"/>
-        <TextBox Text="{Binding MedianMaskSize}" HorizontalAlignment="Left" Height="20" Margin="104,167,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
+        <TextBox HorizontalAlignment="Left" Height="20" Margin="104,167,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35">
+            <TextBox.Text>
+                <Binding Path="MedianMaskSize"
+                        ValidatesOnNotifyDataErrors="True"
+                        ValidatesOnDataErrors="True"
+                        NotifyOnValidationError="True">
+                    <Binding.ValidationRules>
+                        <local:MaskSizeValidationRule ValidatesOnTargetUpdated="True" />
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
         <Button Content="Apply" Command="{Binding MedianFilterCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Margin="145,166,0,0" Height="21"/>
         <TabControl ItemsSource="{Binding Images}" SelectedItem="{Binding SelectedImage}" HorizontalAlignment="Left" Height="750" Margin="200,10,0,0" VerticalAlignment="Top" Width="980">
             <TabControl.ItemTemplate>
@@ -48,15 +70,26 @@
         </TabControl>
         <TextBox Text="{Binding BrightnessChange}" HorizontalAlignment="Left" Height="19" Margin="105,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
         <Button Content="Display Histogram" Command="{Binding HistogramCommand}" HorizontalAlignment="Left" Margin="9,39,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
-        <TextBlock Text="Gmin" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="20,194,0,0"/>
-        <TextBox Text="{Binding GMin}" HorizontalAlignment="Left" Height="20" Margin="54,192,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
-        <TextBlock Text="Gmax" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="110,194,0,0"/>
-        <TextBox Text="{Binding GMax}" HorizontalAlignment="Left" Height="20" Margin="144,192,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
-        <Button Content="Modify Histogram" Command="{Binding ModifyHistogramCommand}" HorizontalAlignment="Left" Margin="10,218,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
-        <Button Content="Change Mask" Command="{Binding ChangeMaskCommand}" HorizontalAlignment="Left" Margin="10,244,0,0" VerticalAlignment="Top" Width="90" RenderTransformOrigin="0.51,-2.3"/>
-        <Button Content="Custom filter" Command="{Binding CustomFilterCommand}" HorizontalAlignment="Left" Margin="105,244,0,0" VerticalAlignment="Top" Width="90" RenderTransformOrigin="0.51,-2.3"/>
-        <TextBlock Text="Rosenfeld" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="10,270,0,0"/>
-        <TextBox Text="{Binding R}" HorizontalAlignment="Left" Height="20" Margin="104,270,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
-        <Button Content="Apply" Command="{Binding RosenfeldOperatorCommand}" HorizontalAlignment="Left" Margin="145,270,0,0" VerticalAlignment="Top" Width="50" RenderTransformOrigin="0.51,-2.3"/>
+        <TextBlock Text="Gmin" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Margin="9,254,0,0"/>
+        <TextBox Text="{Binding GMin, ValidatesOnDataErrors=True}" HorizontalAlignment="Left" Height="20" Margin="58,253,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
+        <TextBlock Text="Gmax" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="34" Margin="109,254,0,0"/>
+        <TextBox Text="{Binding GMax, ValidatesOnDataErrors=True}" HorizontalAlignment="Left" Height="20" Margin="158,253,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
+        <Button Content="Modify Histogram" Command="{Binding ModifyHistogramCommand}" HorizontalAlignment="Left" Margin="9,278,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
+        <Button Content="Change Mask" Command="{Binding ChangeMaskCommand}" HorizontalAlignment="Left" Margin="9,192,0,0" VerticalAlignment="Top" Width="90" RenderTransformOrigin="0.51,-2.3"/>
+        <Button Content="Custom filter" Command="{Binding CustomFilterCommand}" HorizontalAlignment="Left" Margin="104,192,0,0" VerticalAlignment="Top" Width="90" RenderTransformOrigin="0.51,-2.3"/>
+        <TextBlock Text="Rosenfeld" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="11,218,0,0" Height="19"/>
+        <TextBox HorizontalAlignment="Left" Height="20" Margin="104,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35">
+            <TextBox.Text>
+                <Binding Path="R"
+                        ValidatesOnNotifyDataErrors="True"
+                        ValidatesOnDataErrors="True"
+                        NotifyOnValidationError="True">
+                    <Binding.ValidationRules>
+                        <local:PositiveIntegerValidationRule ValidatesOnTargetUpdated="True" />
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <Button Content="Apply" Command="{Binding RosenfeldOperatorCommand}" HorizontalAlignment="Left" Margin="144,218,0,0" VerticalAlignment="Top" Width="50" RenderTransformOrigin="0.51,-2.3"/>
     </Grid>
 </Window>
