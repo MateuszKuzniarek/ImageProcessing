@@ -20,10 +20,10 @@ namespace ImageProcessing
     /// </summary>
     public partial class MaskWindow : Window
     {
-        public MaskWindow()
+        public MaskWindow(WriteableBitmap image)
         {
             InitializeComponent();
-            DataContext = new MaskWindowController(this.MaskTable, this);
+            DataContext = new MaskWindowController(this.MaskTable, this, image);
         }
     }
 }

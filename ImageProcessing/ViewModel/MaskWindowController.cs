@@ -23,10 +23,13 @@ namespace ImageProcessing
         public DataGrid MaskTable { get; private set; }
         public MaskWindow Window;
 
-        public MaskWindowController(DataGrid maskTable, MaskWindow maskWindow)
+        private WriteableBitmap image;
+
+        public MaskWindowController(DataGrid maskTable, MaskWindow maskWindow, WriteableBitmap image)
         {
             this.MaskTable = maskTable;
             this.Window = maskWindow;
+            this.image = image;
             CreateMaskCommand = new RelayCommand(x => CreateMask(MaskSize));
             SaveMaskCommand = new RelayCommand(x => SaveMask());
             CreateMask(3);
@@ -34,17 +37,19 @@ namespace ImageProcessing
 
         private void SaveMask()
         {
-            var maskArray = (ObservableCollection<Object>)MaskTable.ItemsSource;
-            ImageOperations.maskArray = new int[maskArray.Count, maskArray.Count];
-            for(int i = 0; i < maskArray.Count; i++)
+            var maskArrayCollection = (ObservableCollection<Object>)MaskTable.ItemsSource;
+            int[,] maskArray = new int[maskArrayCollection.Count, maskArrayCollection.Count];
+            for(int i = 0; i < maskArrayCollection.Count; i++)
             {
-                dynamic row = maskArray[i];
+                dynamic row = maskArrayCollection[i];
                 IDictionary<string, object> dictionary = (IDictionary<string, object>)row;
-                for (int j = 1; j <= maskArray.Count; j++)
+                for (int j = 1; j <= maskArrayCollection.Count; j++)
                 {
-                    ImageOperations.maskArray[i, j-1] = Int32.Parse(dictionary["Col" + j.ToString()].ToString());
+                    maskArray[i, j-1] = Int32.Parse(dictionary["Col" + j.ToString()].ToString());
                 }
             }
+
+            ImageOperations.CustomFilter(image, maskArray);
             Window.Close();
         }
 

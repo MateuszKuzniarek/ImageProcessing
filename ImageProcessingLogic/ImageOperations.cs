@@ -9,7 +9,6 @@ namespace ImageProcessingLogic
     {
         private const int bytesPerPixel = 4;
         private const int numberOfColors = 3;
-        public static int[,] maskArray;
 
         public unsafe static void RosenfeldOperator(WriteableBitmap image, int R)
         {
@@ -60,7 +59,7 @@ namespace ImageProcessingLogic
             image.Unlock();
         }
         
-        public unsafe static void CustomFilter(WriteableBitmap image)
+        public unsafe static void CustomFilter(WriteableBitmap image, int[,] maskArray)
         {
             ApplyMask(image, maskArray);
         }

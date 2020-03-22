@@ -75,8 +75,7 @@
         <TextBlock Text="Gmax" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="34" Margin="109,254,0,0"/>
         <TextBox Text="{Binding GMax, ValidatesOnDataErrors=True}" HorizontalAlignment="Left" Height="20" Margin="158,253,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
         <Button Content="Modify Histogram" Command="{Binding ModifyHistogramCommand}" HorizontalAlignment="Left" Margin="9,278,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
-        <Button Content="Change Mask" Command="{Binding ChangeMaskCommand}" HorizontalAlignment="Left" Margin="9,192,0,0" VerticalAlignment="Top" Width="90" RenderTransformOrigin="0.51,-2.3"/>
-        <Button Content="Custom filter" Command="{Binding CustomFilterCommand}" HorizontalAlignment="Left" Margin="104,192,0,0" VerticalAlignment="Top" Width="90" RenderTransformOrigin="0.51,-2.3"/>
+        <Button Content="Apply filter" Command="{Binding ChangeMaskCommand}" HorizontalAlignment="Left" Margin="9,192,0,0" VerticalAlignment="Top" Width="184" RenderTransformOrigin="0.51,-2.3"/>
         <TextBlock Text="Rosenfeld" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="11,218,0,0" Height="19"/>
         <TextBox HorizontalAlignment="Left" Height="20" Margin="104,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35">
             <TextBox.Text>

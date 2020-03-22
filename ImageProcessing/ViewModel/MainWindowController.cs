@@ -92,7 +92,6 @@ namespace ImageProcessing
             MedianFilterCommand = new RelayCommand(x => MedianFilter(MedianMaskSize), x => SelectedImage != null);
             ModifyHistogramCommand = new RelayCommand(x => ModifyHistogram(GMin, GMax), x => SelectedImage != null && areHistogramModificationValuesValid);
             ChangeMaskCommand = new RelayCommand(x => ChangeMask(), x => SelectedImage != null);
-            CustomFilterCommand = new RelayCommand(x => CustomFilter(), x => (SelectedImage != null && ImageOperations.maskArray != null));
             RosenfeldOperatorCommand = new RelayCommand(x => RosenfeldOperator(R), x => (SelectedImage != null));
         }
 
@@ -103,13 +102,8 @@ namespace ImageProcessing
 
         private void ChangeMask()
         {
-            MaskWindow maskWindow = new MaskWindow();
+            MaskWindow maskWindow = new MaskWindow(SelectedImage.Bitmap);
             maskWindow.Show();
-        }
-
-        private void CustomFilter()
-        {
-            ImageOperations.CustomFilter(SelectedImage.Bitmap);
         }
 
         private void ModifyHistogram(int gMin, int gMax)
