@@ -29,6 +29,7 @@ namespace ImageProcessing
         public ICommand CustomFilterCommand { get; private set; }
         public ICommand RosenfeldOperatorCommand { get; private set; }
         public ICommand OpenInNewWindowCommand { get; private set; }
+        public ICommand FastNorthCommand { get; private set; }
 
         public ImageAbstraction SelectedImage { get; set; }
         public ObservableCollection<ImageAbstraction> Images { get; set; } = new ObservableCollection<ImageAbstraction>();
@@ -95,6 +96,12 @@ namespace ImageProcessing
             ChangeMaskCommand = new RelayCommand(x => ChangeMask(), x => SelectedImage != null);
             RosenfeldOperatorCommand = new RelayCommand(x => RosenfeldOperator(R), x => (SelectedImage != null));
             OpenInNewWindowCommand = new RelayCommand(x => OpenInNewWindow(), x => (SelectedImage != null));
+            FastNorthCommand = new RelayCommand(x => FastNorth(), x => (SelectedImage != null));
+        }
+
+        private void FastNorth()
+        {
+            FastImageOperations.ApplyNorthFilter(SelectedImage.Bitmap);
         }
 
         private void OpenInNewWindow()

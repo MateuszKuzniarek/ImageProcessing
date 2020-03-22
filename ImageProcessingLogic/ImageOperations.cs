@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -7,8 +8,8 @@ namespace ImageProcessingLogic
 {
     public static class ImageOperations
     {
-        private const int bytesPerPixel = 4;
-        private const int numberOfColors = 3;
+        public const int bytesPerPixel = 4;
+        public const int numberOfColors = 3;
 
         public unsafe static void RosenfeldOperator(WriteableBitmap image, int R)
         {
@@ -253,6 +254,8 @@ namespace ImageProcessingLogic
 
         public unsafe static void ApplyMask(WriteableBitmap image, int[,] mask, double factor = 1)
         {
+            Stopwatch sw = Stopwatch.StartNew();
+
             image.Lock();
             byte* imagePointer = (byte*)image.BackBuffer;
             int memorySize = image.BackBufferStride * image.PixelHeight;
@@ -292,6 +295,9 @@ namespace ImageProcessingLogic
 
             image.AddDirtyRect(new Int32Rect(0, 0, image.PixelWidth, image.PixelHeight));
             image.Unlock();
+
+            sw.Stop();
+            Console.WriteLine("Normal Elapsed={0}", sw.Elapsed);
         }
     }
 }
