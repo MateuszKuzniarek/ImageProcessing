@@ -30,6 +30,9 @@ namespace ImageProcessing
         public ICommand RosenfeldOperatorCommand { get; private set; }
         public ICommand OpenInNewWindowCommand { get; private set; }
         public ICommand FastNorthCommand { get; private set; }
+        public ICommand FastNorthEastCommand { get; private set; }
+        public ICommand FastEastCommand { get; private set; }
+        public ICommand FastSouthEastCommand { get; private set; }
 
         public ImageAbstraction SelectedImage { get; set; }
         public ObservableCollection<ImageAbstraction> Images { get; set; } = new ObservableCollection<ImageAbstraction>();
@@ -97,11 +100,29 @@ namespace ImageProcessing
             RosenfeldOperatorCommand = new RelayCommand(x => RosenfeldOperator(R), x => (SelectedImage != null));
             OpenInNewWindowCommand = new RelayCommand(x => OpenInNewWindow(), x => (SelectedImage != null));
             FastNorthCommand = new RelayCommand(x => FastNorth(), x => (SelectedImage != null));
+            FastNorthEastCommand = new RelayCommand(x => FastNorthEast(), x => (SelectedImage != null));
+            FastEastCommand = new RelayCommand(x => FastEast(), x => (SelectedImage != null));
+            FastSouthEastCommand = new RelayCommand(x => FastSouthEast(), x => (SelectedImage != null));
         }
 
         private void FastNorth()
         {
             FastImageOperations.ApplyNorthFilter(SelectedImage.Bitmap);
+        }
+
+        private void FastNorthEast()
+        {
+            FastImageOperations.ApplyNorthEastFilter(SelectedImage.Bitmap);
+        }
+
+        private void FastEast()
+        {
+            FastImageOperations.ApplyEastFilter(SelectedImage.Bitmap);
+        }
+
+        private void FastSouthEast()
+        {
+            FastImageOperations.ApplySouthEastFilter(SelectedImage.Bitmap);
         }
 
         private void OpenInNewWindow()
