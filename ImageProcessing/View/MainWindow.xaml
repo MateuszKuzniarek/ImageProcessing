@@ -12,17 +12,17 @@
     <Grid>
         <Button Content="Load image" Command ="{Binding LoadImageCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="89" Margin="10,10,0,0" Click="Button_Click"/>
         <Button Content="Save image" Command ="{Binding SaveImageCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="89" Margin="106,10,0,0"/>
-        <TextBlock Text="Brightness" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="9,70,0,0"/>
-        <Button Content="+" Command="{Binding IncreaseBrightnessCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="172,70,0,0" Height="19"/>
-        <Button Content="-" Command="{Binding DecreaseBrightnessCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="145,70,0,0" Height="19"/>
-        <TextBlock Text="Contrast" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="10,94,0,0"/>
-        <TextBox Text="{Binding ContrastChange}" HorizontalAlignment="Left" Height="20" Margin="105,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
-        <Button Content="+" Command="{Binding IncreaseContrastCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="173,94,0,0" Height="19"/>
-        <Button Content="-" Command="{Binding DecreaseContrastCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="145,94,0,0" Height="19"/>
-        <TextBlock Text="Negative" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="10,119,0,0"/>
-        <Button Content="Change" Command="{Binding NegativeCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="91" Margin="104,118,0,0" Height="19"/>
-        <TextBlock Text="Arithmetic filter" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="10,144,0,0"/>
-        <TextBox HorizontalAlignment="Left" Height="20" Margin="104,142,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35">
+        <TextBlock Text="Brightness" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="10,105,0,0"/>
+        <Button Content="+" Command="{Binding IncreaseBrightnessCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="173,104,0,0" Height="19"/>
+        <Button Content="-" Command="{Binding DecreaseBrightnessCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="146,104,0,0" Height="19"/>
+        <TextBlock Text="Contrast" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="11,129,0,0"/>
+        <TextBox Text="{Binding ContrastChange}" HorizontalAlignment="Left" Height="20" Margin="106,129,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
+        <Button Content="+" Command="{Binding IncreaseContrastCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="174,128,0,0" Height="19"/>
+        <Button Content="-" Command="{Binding DecreaseContrastCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22" Margin="146,128,0,0" Height="19"/>
+        <TextBlock Text="Negative" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="11,153,0,0"/>
+        <Button Content="Change" Command="{Binding NegativeCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="91" Margin="105,152,0,0" Height="19"/>
+        <TextBlock Text="Arithmetic filter" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="11,178,0,0"/>
+        <TextBox HorizontalAlignment="Left" Height="20" Margin="105,177,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35">
             <TextBox.Text>
                 <Binding Path="ArithmeticMaskSize"
                         ValidatesOnNotifyDataErrors="True"
@@ -34,9 +34,9 @@
                 </Binding>
             </TextBox.Text>
         </TextBox>
-        <Button Content="Apply" Command="{Binding ArithmeticFilterCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Margin="145,142,0,0" Height="19"/>
-        <TextBlock Text="Median filter" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="10,169,0,0"/>
-        <TextBox HorizontalAlignment="Left" Height="20" Margin="104,167,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35">
+        <Button Content="Apply" Command="{Binding ArithmeticFilterCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Margin="146,176,0,0" Height="19"/>
+        <TextBlock Text="Median filter" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="11,203,0,0"/>
+        <TextBox HorizontalAlignment="Left" Height="20" Margin="105,201,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35">
             <TextBox.Text>
                 <Binding Path="MedianMaskSize"
                         ValidatesOnNotifyDataErrors="True"
@@ -48,7 +48,7 @@
                 </Binding>
             </TextBox.Text>
         </TextBox>
-        <Button Content="Apply" Command="{Binding MedianFilterCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Margin="145,166,0,0" Height="21"/>
+        <Button Content="Apply" Command="{Binding MedianFilterCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Margin="146,200,0,0" Height="21"/>
         <TabControl ItemsSource="{Binding Images}" SelectedItem="{Binding SelectedImage}" HorizontalAlignment="Left" Height="750" Margin="200,10,0,0" VerticalAlignment="Top" Width="980">
             <TabControl.ItemTemplate>
                 <DataTemplate>
@@ -68,16 +68,16 @@
 
             </TabControl.ContentTemplate>
         </TabControl>
-        <TextBox Text="{Binding BrightnessChange}" HorizontalAlignment="Left" Height="19" Margin="105,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
-        <Button Content="Display Histogram" Command="{Binding HistogramCommand}" HorizontalAlignment="Left" Margin="9,39,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
-        <TextBlock Text="Gmin" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Margin="9,254,0,0"/>
-        <TextBox Text="{Binding GMin, ValidatesOnDataErrors=True}" HorizontalAlignment="Left" Height="20" Margin="58,253,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
-        <TextBlock Text="Gmax" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="34" Margin="109,254,0,0"/>
-        <TextBox Text="{Binding GMax, ValidatesOnDataErrors=True}" HorizontalAlignment="Left" Height="20" Margin="158,253,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
-        <Button Content="Modify Histogram" Command="{Binding ModifyHistogramCommand}" HorizontalAlignment="Left" Margin="9,278,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
-        <Button Content="Apply filter" Command="{Binding ChangeMaskCommand}" HorizontalAlignment="Left" Margin="9,192,0,0" VerticalAlignment="Top" Width="184" RenderTransformOrigin="0.51,-2.3"/>
-        <TextBlock Text="Rosenfeld" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="11,218,0,0" Height="19"/>
-        <TextBox HorizontalAlignment="Left" Height="20" Margin="104,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35">
+        <TextBox Text="{Binding BrightnessChange}" HorizontalAlignment="Left" Height="19" Margin="106,105,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
+        <Button Content="Display Histogram" Command="{Binding HistogramCommand}" HorizontalAlignment="Left" Margin="9,72,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
+        <TextBlock Text="Gmin" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Margin="10,289,0,0"/>
+        <TextBox Text="{Binding GMin, ValidatesOnDataErrors=True}" HorizontalAlignment="Left" Height="20" Margin="59,287,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
+        <TextBlock Text="Gmax" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="34" Margin="110,289,0,0"/>
+        <TextBox Text="{Binding GMax, ValidatesOnDataErrors=True}" HorizontalAlignment="Left" Height="20" Margin="159,287,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35"/>
+        <Button Content="Modify Histogram" Command="{Binding ModifyHistogramCommand}" HorizontalAlignment="Left" Margin="10,312,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
+        <Button Content="Apply filter" Command="{Binding ChangeMaskCommand}" HorizontalAlignment="Left" Margin="10,226,0,0" VerticalAlignment="Top" Width="184" RenderTransformOrigin="0.51,-2.3"/>
+        <TextBlock Text="Rosenfeld" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="12,252,0,0" Height="19"/>
+        <TextBox HorizontalAlignment="Left" Height="20" Margin="105,251,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="35">
             <TextBox.Text>
                 <Binding Path="R"
                         ValidatesOnNotifyDataErrors="True"
@@ -89,6 +89,7 @@
                 </Binding>
             </TextBox.Text>
         </TextBox>
-        <Button Content="Apply" Command="{Binding RosenfeldOperatorCommand}" HorizontalAlignment="Left" Margin="144,218,0,0" VerticalAlignment="Top" Width="50" RenderTransformOrigin="0.51,-2.3"/>
+        <Button Content="Apply" Command="{Binding RosenfeldOperatorCommand}" HorizontalAlignment="Left" Margin="145,252,0,0" VerticalAlignment="Top" Width="50" RenderTransformOrigin="0.51,-2.3"/>
+        <Button Content="Open in new window" Command="{Binding OpenInNewWindowCommand}" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
     </Grid>
 </Window>

@@ -28,6 +28,7 @@ namespace ImageProcessing
         public ICommand ChangeMaskCommand { get; private set; }
         public ICommand CustomFilterCommand { get; private set; }
         public ICommand RosenfeldOperatorCommand { get; private set; }
+        public ICommand OpenInNewWindowCommand { get; private set; }
 
         public ImageAbstraction SelectedImage { get; set; }
         public ObservableCollection<ImageAbstraction> Images { get; set; } = new ObservableCollection<ImageAbstraction>();
@@ -93,6 +94,13 @@ namespace ImageProcessing
             ModifyHistogramCommand = new RelayCommand(x => ModifyHistogram(GMin, GMax), x => SelectedImage != null && areHistogramModificationValuesValid);
             ChangeMaskCommand = new RelayCommand(x => ChangeMask(), x => SelectedImage != null);
             RosenfeldOperatorCommand = new RelayCommand(x => RosenfeldOperator(R), x => (SelectedImage != null));
+            OpenInNewWindowCommand = new RelayCommand(x => OpenInNewWindow(), x => (SelectedImage != null));
+        }
+
+        private void OpenInNewWindow()
+        {
+            ImageWindow imageWindow = new ImageWindow(SelectedImage);
+            imageWindow.Show();
         }
 
         private void RosenfeldOperator(int R)

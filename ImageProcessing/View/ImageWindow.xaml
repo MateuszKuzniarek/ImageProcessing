@@ -1,0 +1,16 @@
+﻿<Window x:Class="ImageProcessing.ImageWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ImageProcessing"
+        mc:Ignorable="d"
+        Width="Auto" Height="Auto" SizeToContent="WidthAndHeight">
+    <Grid>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto">
+            <Grid Background="#FFE5E5E5">
+                <Image Source="{Binding Image}" Stretch="None"/>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Window>

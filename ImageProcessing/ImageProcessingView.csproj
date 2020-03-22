@@ -70,10 +70,14 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Validators\PositiveIntegerValidationRule.cs" />
     <Compile Include="Validators\MaskSizeValidationRule.cs" />
+    <Compile Include="ViewModel\ImageWindowController.cs" />
     <Compile Include="View\HistogramWindow.xaml.cs">
       <DependentUpon>HistogramWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\HistogramWindowController.cs" />
+    <Compile Include="View\ImageWindow.xaml.cs">
+      <DependentUpon>ImageWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MaskWindow.xaml.cs">
       <DependentUpon>MaskWindow.xaml</DependentUpon>
     </Compile>
@@ -81,6 +85,10 @@
     <Compile Include="Utils\ImageAbstraction.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
     <Page Include="View\HistogramWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ImageWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
