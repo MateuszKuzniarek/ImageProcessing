@@ -33,9 +33,11 @@ namespace ImageProcessing
         public ICommand FastNorthEastCommand { get; private set; }
         public ICommand FastEastCommand { get; private set; }
         public ICommand FastSouthEastCommand { get; private set; }
+        public ICommand UndoCommand { get; private set; }
 
         public ImageAbstraction SelectedImage { get; set; }
         public ObservableCollection<ImageAbstraction> Images { get; set; } = new ObservableCollection<ImageAbstraction>();
+        public ObservableCollection<ImageAbstraction> OriginalImages { get; set; } = new ObservableCollection<ImageAbstraction>();
         public int BrightnessChange { get; set; } = 1;
         public int ContrastChange { get; set; } = 1;
         public int NegativeChange { get; set; } = 1;
@@ -103,6 +105,20 @@ namespace ImageProcessing
             FastNorthEastCommand = new RelayCommand(x => FastNorthEast(), x => (SelectedImage != null));
             FastEastCommand = new RelayCommand(x => FastEast(), x => (SelectedImage != null));
             FastSouthEastCommand = new RelayCommand(x => FastSouthEast(), x => (SelectedImage != null));
+            UndoCommand = new RelayCommand(x => Undo(), x => (SelectedImage != null));
+        }
+
+        private void Undo()
+        {
+            int originalImageIndex = 0;
+            for(int i = 0; i < Images.Count; i++)
+            {
+                if (Images[i].Equals(SelectedImage))
+                {
+                    originalImageIndex = i;
+                }
+            }
+            ImageOperations.Undo(SelectedImage.Bitmap, OriginalImages[originalImageIndex].Bitmap);
         }
 
         private void FastNorth()
@@ -188,13 +204,16 @@ namespace ImageProcessing
 
             BitmapImage bitmapImage = new BitmapImage(new Uri(dlg.FileName));
             WriteableBitmap writeableBitmap = new WriteableBitmap(bitmapImage);
+            WriteableBitmap originalWriteableBitamap = new WriteableBitmap(bitmapImage);
 
             if (writeableBitmap.Format != PixelFormats.Bgra32)
             {
                 writeableBitmap = new WriteableBitmap(new FormatConvertedBitmap(writeableBitmap, PixelFormats.Bgra32, null, 0));
+                originalWriteableBitamap = new WriteableBitmap(new FormatConvertedBitmap(writeableBitmap, PixelFormats.Bgra32, null, 0));
             }
-
+            
             Images.Add(new ImageAbstraction(writeableBitmap, bitmapImage.UriSource.Segments.Last()));
+            OriginalImages.Add(new ImageAbstraction(originalWriteableBitamap, bitmapImage.UriSource.Segments.Last()));
         }
 
         private void SaveImage()

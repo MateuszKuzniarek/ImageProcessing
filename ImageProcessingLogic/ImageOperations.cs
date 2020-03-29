@@ -10,6 +10,29 @@ namespace ImageProcessingLogic
     {
         public const int bytesPerPixel = 4;
         public const int numberOfColors = 3;
+        
+        public unsafe static void Undo(WriteableBitmap selectedImage, WriteableBitmap originalImage)
+        {
+            selectedImage.Lock();
+            byte* imagePointer = (byte*)selectedImage.BackBuffer;
+            byte* originalImagePointer = (byte*)originalImage.BackBuffer;
+            int stride = selectedImage.BackBufferStride;
+
+            for (int i = 0; i < selectedImage.PixelHeight; i++)
+            {
+                for (int j = 0; j < selectedImage.PixelWidth; j++)
+                {
+                    foreach (int colorChannel in ColorChannel.All)
+                    {
+                        int index = i * stride + j * bytesPerPixel + colorChannel;
+                        imagePointer[index] = originalImagePointer[index];
+                    }
+                }
+            }
+
+            selectedImage.AddDirtyRect(new Int32Rect(0, 0, selectedImage.PixelWidth, selectedImage.PixelHeight));
+            selectedImage.Unlock();
+        }
 
         public unsafe static void RosenfeldOperator(WriteableBitmap image, int R)
         {
@@ -73,7 +96,6 @@ namespace ImageProcessingLogic
             {
                 brightnessArray[i] = (int)(i + brightnessChange);
             }
-
             ChangePixelsValue(image, brightnessArray, ColorChannel.All);
         }
 
