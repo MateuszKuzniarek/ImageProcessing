@@ -8,9 +8,6 @@ namespace ImageProcessingLogic
 {
     public static class ImageOperations
     {
-        public const int bytesPerPixel = 4;
-        public const int numberOfColors = 3;
-        
         public unsafe static void Undo(WriteableBitmap selectedImage, WriteableBitmap originalImage)
         {
             selectedImage.Lock();
@@ -24,7 +21,7 @@ namespace ImageProcessingLogic
                 {
                     foreach (int colorChannel in ColorChannel.All)
                     {
-                        int index = i * stride + j * bytesPerPixel + colorChannel;
+                        int index = i * stride + j * ImageConstants.bytesPerPixel + colorChannel;
                         imagePointer[index] = originalImagePointer[index];
                     }
                 }
@@ -49,14 +46,14 @@ namespace ImageProcessingLogic
                 {
                     for (int j = 0; j < image.PixelWidth - (R - 1); j++)
                     {
-                        for (int k = 0; k < numberOfColors; k++)
+                        for (int k = 0; k < ImageConstants.numberOfColors; k++)
                         {
                             int sum1 = 0;
                             for (int a = 1; a <= R; a++)
                             {
                                 int xCoordinate = i;
                                 int yCoordinate = j + a -1;
-                                int pixelValue = imageCopyPointer[xCoordinate * stride + yCoordinate * bytesPerPixel + k];
+                                int pixelValue = imageCopyPointer[xCoordinate * stride + yCoordinate * ImageConstants.bytesPerPixel + k];
                                 sum1 += pixelValue;
                             }
 
@@ -65,11 +62,11 @@ namespace ImageProcessingLogic
                             {
                                 int xCoordinate = i;
                                 int yCoordinate = j - a;
-                                int pixelValue = imageCopyPointer[xCoordinate * stride + yCoordinate * bytesPerPixel + k];
+                                int pixelValue = imageCopyPointer[xCoordinate * stride + yCoordinate * ImageConstants.bytesPerPixel + k];
                                 sum2 += pixelValue;
                             }
 
-                            int index = i * stride + j * bytesPerPixel + k;
+                            int index = i * stride + j * ImageConstants.bytesPerPixel + k;
                             int newValue = (int)(1d/R * (sum1 - sum2));
                             newValue = Math.Min(newValue, 255);
                             newValue = Math.Max(newValue, 0);
@@ -130,17 +127,17 @@ namespace ImageProcessingLogic
                 {
                     for (int j = offset; j < image.PixelWidth - offset; j++)
                     {
-                        for (int k = 0; k < numberOfColors; k++)
+                        for (int k = 0; k < ImageConstants.numberOfColors; k++)
                         {
                             List<int> pixelList = new List<int>();
                             for (int a = i - offset; a <= i + offset; a++)
                             {
                                 for (int b = j - offset; b <= j + offset; b++)
                                 {
-                                    pixelList.Add(imageCopyPointer[a * stride + b * bytesPerPixel + k]);
+                                    pixelList.Add(imageCopyPointer[a * stride + b * ImageConstants.bytesPerPixel + k]);
                                 }
                             }
-                            int index = i * stride + j * bytesPerPixel + k;
+                            int index = i * stride + j * ImageConstants.bytesPerPixel + k;
                             pixelList.Sort();
                             int middle = pixelList.Count / 2;
                             int median = pixelList.Count % 2 != 0 ? pixelList[middle] : (pixelList[middle] + pixelList[middle - 1]) / 2;
@@ -200,7 +197,7 @@ namespace ImageProcessingLogic
             {
                 for (int j = 0; j < image.PixelWidth; j++)
                 {
-                    int index = i * stride + j * bytesPerPixel;
+                    int index = i * stride + j * ImageConstants.bytesPerPixel;
                     result.BlueData[imagePointer[index]]++;
 
                     index++;
@@ -261,7 +258,7 @@ namespace ImageProcessingLogic
                 {
                     foreach(int colorChannel in colorChannels)
                     {
-                        int index = i * stride + j * bytesPerPixel + colorChannel;
+                        int index = i * stride + j * ImageConstants.bytesPerPixel + colorChannel;
                         int newValue = lookUpTable[imagePointer[index]];
                         newValue = Math.Min(newValue, 255);
                         newValue = Math.Max(newValue, 0);
@@ -292,7 +289,7 @@ namespace ImageProcessingLogic
                 {
                     for (int j = offset; j < image.PixelWidth - offset; j++)
                     {
-                        for (int k = 0; k < numberOfColors; k++)
+                        for (int k = 0; k < ImageConstants.numberOfColors; k++)
                         {
                             int sum = 0;
                             for (int a = 0; a < mask.GetLength(0); a++)
@@ -301,11 +298,11 @@ namespace ImageProcessingLogic
                                 {
                                     int xCoordinate = i - offset + a;
                                     int yCoordinate = j - offset + b;
-                                    int pixelValue = imageCopyPointer[xCoordinate * stride + yCoordinate * bytesPerPixel + k];
+                                    int pixelValue = imageCopyPointer[xCoordinate * stride + yCoordinate * ImageConstants.bytesPerPixel + k];
                                     sum += pixelValue * mask[a, b];
                                 }
                             }
-                            int index = i * stride + j * bytesPerPixel + k;
+                            int index = i * stride + j * ImageConstants.bytesPerPixel + k;
                             int newValue = (int)(sum * factor);
                             newValue = Math.Min(newValue, 255);
                             newValue = Math.Max(newValue, 0);

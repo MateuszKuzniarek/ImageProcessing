@@ -27,7 +27,7 @@ namespace ImageProcessingLogic
                 int stride = image.BackBufferStride;
                 int offset = 1;
 
-                for (int k = 0; k < ImageOperations.numberOfColors; k++)
+                for (int k = 0; k < ImageConstants.numberOfColors; k++)
                 {
                     for (int i = offset; i < image.PixelHeight - offset; i++)
                     {
@@ -41,21 +41,21 @@ namespace ImageProcessingLogic
                             secondColumnPartialSum = thirdColumnPartialSum;
                             thirdColumnPartialSum = 0;
 
-                            int pixelValue = imageCopyPointer[i * stride + j * ImageOperations.bytesPerPixel + k];
+                            int pixelValue = imageCopyPointer[i * stride + j * ImageConstants.bytesPerPixel + k];
                             sum += pixelValue * (-2);
-                            pixelValue = imageCopyPointer[i * stride + (j - 1) * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[i * stride + (j - 1) * ImageConstants.bytesPerPixel + k];
                             sum += pixelValue;
 
-                            pixelValue = imageCopyPointer[(i - 1) * stride + (j + 1) * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[(i - 1) * stride + (j + 1) * ImageConstants.bytesPerPixel + k];
                             thirdColumnPartialSum += pixelValue;
                             sum += pixelValue;
-                            pixelValue = imageCopyPointer[i * stride + (j + 1) * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[i * stride + (j + 1) * ImageConstants.bytesPerPixel + k];
                             sum += pixelValue;
-                            pixelValue = imageCopyPointer[(i + 1) * stride + (j + 1) * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[(i + 1) * stride + (j + 1) * ImageConstants.bytesPerPixel + k];
                             thirdColumnPartialSum += -pixelValue;
                             sum += -pixelValue;
 
-                            int index = i * stride + j * ImageOperations.bytesPerPixel + k;
+                            int index = i * stride + j * ImageConstants.bytesPerPixel + k;
                             int newValue = (int)(sum);
                             newValue = Math.Min(newValue, 255);
                             newValue = Math.Max(newValue, 0);
@@ -87,7 +87,7 @@ namespace ImageProcessingLogic
                 int stride = image.BackBufferStride;
                 int offset = 1;
 
-                for (int k = 0; k < ImageOperations.numberOfColors; k++)
+                for (int k = 0; k < ImageConstants.numberOfColors; k++)
                 {
                     for (int i = offset; i < image.PixelHeight - offset; i++)
                     {
@@ -99,26 +99,26 @@ namespace ImageProcessingLogic
                             sum += secondColumnPartialSum;
                             secondColumnPartialSum = 0;
 
-                            int pixelValue = imageCopyPointer[i * stride + j * ImageOperations.bytesPerPixel + k];
+                            int pixelValue = imageCopyPointer[i * stride + j * ImageConstants.bytesPerPixel + k];
                             sum += pixelValue * (-2);
-                            pixelValue = imageCopyPointer[(i - 1) * stride + j * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[(i - 1) * stride + j * ImageConstants.bytesPerPixel + k];
                             secondColumnPartialSum += pixelValue;
                             sum += pixelValue;
-                            pixelValue = imageCopyPointer[(i + 1) * stride + j * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[(i + 1) * stride + j * ImageConstants.bytesPerPixel + k];
                             secondColumnPartialSum += -pixelValue;
                             sum += -pixelValue;
 
-                            pixelValue = imageCopyPointer[(i - 1) * stride + (j + 1) * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[(i - 1) * stride + (j + 1) * ImageConstants.bytesPerPixel + k];
                             sum += pixelValue;
-                            pixelValue = imageCopyPointer[i * stride + (j + 1) * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[i * stride + (j + 1) * ImageConstants.bytesPerPixel + k];
                             sum += pixelValue;
-                            pixelValue = imageCopyPointer[(i + 1) * stride + (j + 1) * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[(i + 1) * stride + (j + 1) * ImageConstants.bytesPerPixel + k];
                             sum += pixelValue;
 
-                            pixelValue = imageCopyPointer[i * stride + (j - 1) * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[i * stride + (j - 1) * ImageConstants.bytesPerPixel + k];
                             sum += -pixelValue;
 
-                            int index = i * stride + j * ImageOperations.bytesPerPixel + k;
+                            int index = i * stride + j * ImageConstants.bytesPerPixel + k;
                             int newValue = (int)(sum);
                             newValue = Math.Min(newValue, 255);
                             newValue = Math.Max(newValue, 0);
@@ -150,7 +150,7 @@ namespace ImageProcessingLogic
                 int stride = image.BackBufferStride;
                 int offset = 1;
 
-                for (int k = 0; k < ImageOperations.numberOfColors; k++)
+                for (int k = 0; k < ImageConstants.numberOfColors; k++)
                 {
                     for (int i = offset; i < image.PixelHeight - offset; i++)
                     {
@@ -164,21 +164,21 @@ namespace ImageProcessingLogic
                             secondColumnPartialSum = thirdColumnPartialSum;
                             thirdColumnPartialSum = 0;
 
-                            int pixelValue = imageCopyPointer[i * stride + j * ImageOperations.bytesPerPixel + k];
+                            int pixelValue = imageCopyPointer[i * stride + j * ImageConstants.bytesPerPixel + k];
                             sum += pixelValue * (-2);
-                            pixelValue = imageCopyPointer[i * stride + (j - 1) * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[i * stride + (j - 1) * ImageConstants.bytesPerPixel + k];
                             sum += -pixelValue;
 
-                            pixelValue = imageCopyPointer[(i - 1) * stride + (j + 1) * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[(i - 1) * stride + (j + 1) * ImageConstants.bytesPerPixel + k];
                             thirdColumnPartialSum += pixelValue;
                             sum += pixelValue;
-                            pixelValue = imageCopyPointer[i * stride + (j + 1) * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[i * stride + (j + 1) * ImageConstants.bytesPerPixel + k];
                             sum += pixelValue;
-                            pixelValue = imageCopyPointer[(i + 1) * stride + (j + 1) * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[(i + 1) * stride + (j + 1) * ImageConstants.bytesPerPixel + k];
                             thirdColumnPartialSum += pixelValue;
                             sum += pixelValue;
 
-                            int index = i * stride + j * ImageOperations.bytesPerPixel + k;
+                            int index = i * stride + j * ImageConstants.bytesPerPixel + k;
                             int newValue = (int)(sum);
                             newValue = Math.Min(newValue, 255);
                             newValue = Math.Max(newValue, 0);
@@ -210,7 +210,7 @@ namespace ImageProcessingLogic
                 int stride = image.BackBufferStride;
                 int offset = 1;
 
-                for (int k = 0; k < ImageOperations.numberOfColors; k++)
+                for (int k = 0; k < ImageConstants.numberOfColors; k++)
                 {
                     for (int i = offset; i < image.PixelHeight - offset; i++)
                     {
@@ -222,26 +222,26 @@ namespace ImageProcessingLogic
                             sum += secondColumnPartialSum;
                             secondColumnPartialSum = 0;
 
-                            int pixelValue = imageCopyPointer[i * stride + j * ImageOperations.bytesPerPixel + k];
+                            int pixelValue = imageCopyPointer[i * stride + j * ImageConstants.bytesPerPixel + k];
                             sum += pixelValue * (-2);
-                            pixelValue = imageCopyPointer[(i - 1) * stride + j * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[(i - 1) * stride + j * ImageConstants.bytesPerPixel + k];
                             secondColumnPartialSum += -pixelValue;
                             sum += -pixelValue;
-                            pixelValue = imageCopyPointer[(i + 1) * stride + j * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[(i + 1) * stride + j * ImageConstants.bytesPerPixel + k];
                             secondColumnPartialSum += pixelValue;
                             sum += pixelValue;
 
-                            pixelValue = imageCopyPointer[(i - 1) * stride + (j + 1) * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[(i - 1) * stride + (j + 1) * ImageConstants.bytesPerPixel + k];
                             sum += pixelValue;
-                            pixelValue = imageCopyPointer[i * stride + (j + 1) * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[i * stride + (j + 1) * ImageConstants.bytesPerPixel + k];
                             sum += pixelValue;
-                            pixelValue = imageCopyPointer[(i + 1) * stride + (j + 1) * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[(i + 1) * stride + (j + 1) * ImageConstants.bytesPerPixel + k];
                             sum += pixelValue;
 
-                            pixelValue = imageCopyPointer[i * stride + (j - 1) * ImageOperations.bytesPerPixel + k];
+                            pixelValue = imageCopyPointer[i * stride + (j - 1) * ImageConstants.bytesPerPixel + k];
                             sum += -pixelValue;
 
-                            int index = i * stride + j * ImageOperations.bytesPerPixel + k;
+                            int index = i * stride + j * ImageConstants.bytesPerPixel + k;
                             int newValue = (int)(sum);
                             newValue = Math.Min(newValue, 255);
                             newValue = Math.Max(newValue, 0);
@@ -267,7 +267,7 @@ namespace ImageProcessingLogic
                 {
                     int yCoordinate = rowNumber - offset + b;
                     int xCoordinate = a;
-                    int pixelValue = imageCopyPointer[yCoordinate * stride + xCoordinate * ImageOperations.bytesPerPixel + k];
+                    int pixelValue = imageCopyPointer[yCoordinate * stride + xCoordinate * ImageConstants.bytesPerPixel + k];
                     productValues[a, b] = pixelValue * mask[a, b];
                     sum += productValues[a, b];
                 }

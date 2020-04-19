@@ -48,12 +48,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColorChannel.cs" />
-    <Compile Include="ContrastType.cs" />
-    <Compile Include="FastImageOperations.cs" />
-    <Compile Include="HistogramData.cs" />
-    <Compile Include="ImageOperations.cs" />
+    <Compile Include="Utils\ColorChannel.cs" />
+    <Compile Include="Utils\Complex.cs" />
+    <Compile Include="Utils\ContrastType.cs" />
+    <Compile Include="Facades\ImageTransformOperations.cs" />
+    <Compile Include="Transforms\DecimationInTimeFFT.cs" />
+    <Compile Include="Facades\FastImageOperations.cs" />
+    <Compile Include="Utils\HistogramData.cs" />
+    <Compile Include="Facades\ImageOperations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transforms\TransformStrategy.cs" />
+    <Compile Include="Utils\ImageConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

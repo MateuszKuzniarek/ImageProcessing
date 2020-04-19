@@ -96,5 +96,6 @@
         <Button Content="Fast East" Command="{Binding FastEastCommand}" HorizontalAlignment="Left" Margin="9,384,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
         <Button Content="Fast South East" Command="{Binding FastSouthEastCommand}" HorizontalAlignment="Left" Margin="9,408,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
         <Button Content="Undo" Command="{Binding UndoCommand}" HorizontalAlignment="Left" Margin="59,530,0,0" VerticalAlignment="Top" Width="85" RenderTransformOrigin="0.51,-2.3"/>
+        <Button Content="Decimation in time FFT" Command="{Binding DecimationInTimeFFTCommand}" HorizontalAlignment="Left" Margin="10,444,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
     </Grid>
 </Window>
