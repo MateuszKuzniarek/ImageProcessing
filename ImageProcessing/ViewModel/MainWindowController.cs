@@ -10,6 +10,7 @@ using System.Drawing.Imaging;
 using System.Windows.Media;
 using System.ComponentModel;
 using ImageProcessingLogic.Transforms;
+using ImageProcessingLogic.Spectra;
 
 namespace ImageProcessing
 {
@@ -34,7 +35,8 @@ namespace ImageProcessing
         public ICommand FastNorthEastCommand { get; private set; }
         public ICommand FastEastCommand { get; private set; }
         public ICommand FastSouthEastCommand { get; private set; }
-        public ICommand DecimationInTimeFFTCommand { get; private set; }
+        public ICommand ShowAmplitudeSpectrumCommand { get; private set; }
+        public ICommand ShowPhaseSpectrumCommand { get; private set; }
         public ICommand UndoCommand { get; private set; }
 
         public ImageAbstraction SelectedImage { get; set; }
@@ -107,7 +109,8 @@ namespace ImageProcessing
             FastNorthEastCommand = new RelayCommand(x => FastNorthEast(), x => (SelectedImage != null));
             FastEastCommand = new RelayCommand(x => FastEast(), x => (SelectedImage != null));
             FastSouthEastCommand = new RelayCommand(x => FastSouthEast(), x => (SelectedImage != null));
-            DecimationInTimeFFTCommand = new RelayCommand(x => DecimationInTimeFFT(), x => (SelectedImage != null));
+            ShowAmplitudeSpectrumCommand = new RelayCommand(x => ShowAmplitudeSpectrum(), x => (SelectedImage != null));
+            ShowPhaseSpectrumCommand = new RelayCommand(x => ShowPhaseSpectrum(), x => (SelectedImage != null));
             UndoCommand = new RelayCommand(x => Undo(), x => (SelectedImage != null));
         }
 
@@ -124,9 +127,14 @@ namespace ImageProcessing
             ImageOperations.Undo(SelectedImage.Bitmap, OriginalImages[originalImageIndex].Bitmap);
         }
 
-        private void DecimationInTimeFFT()
+        private void ShowAmplitudeSpectrum()
         {
-            ImageTransformOperations.ShowTransformedImage(SelectedImage.Bitmap, new DecimationInTimeFFT());
+            ImageTransformOperations.ShowTransformedImage(SelectedImage.Bitmap, new DecimationInTimeFFT(), new AmplitudeSpectrum());
+        }
+
+        private void ShowPhaseSpectrum()
+        {
+            ImageTransformOperations.ShowTransformedImage(SelectedImage.Bitmap, new DecimationInTimeFFT(), new PhaseSpectrum());
         }
 
         private void FastNorth()

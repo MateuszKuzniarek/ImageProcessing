@@ -1,4 +1,5 @@
-﻿using ImageProcessingLogic.Transforms;
+﻿using ImageProcessingLogic.Spectra;
+using ImageProcessingLogic.Transforms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,10 @@ namespace ImageProcessingLogic
 {
     public static class ImageTransformOperations
     {
-        public unsafe static void ShowTransformedImage(WriteableBitmap image, TransformStrategy transformStrategy)
+        public unsafe static void ShowTransformedImage(WriteableBitmap image, TransformStrategy transformStrategy, Spectrum spectrum)
         {
             List<List<List<Complex>>> transform = TransformImage(image, transformStrategy);
-            ShowSpectrum(image, transform);
+            ShowSpectrum(image, transform, spectrum);
             SwapQuadrants(image);
         }
 
@@ -65,7 +66,7 @@ namespace ImageProcessingLogic
             return transformedImage;
         }
 
-        private unsafe static void ShowSpectrum(WriteableBitmap image, List<List<List<Complex>>> transform)
+        private unsafe static void ShowSpectrum(WriteableBitmap image, List<List<List<Complex>>> transform, Spectrum spectrum)
         {
             image.Lock();
             byte* imagePointer = (byte*)image.BackBuffer;
@@ -74,14 +75,14 @@ namespace ImageProcessingLogic
             for (int c = 0; c < ImageConstants.numberOfColors; c++)
             {
                 List<List<Complex>> colorPlane = transform[c];
-                double maxTransformValue = colorPlane.SelectMany(x => x).Select(y => y.GetAbsouluteValue().Real).Max();
-                double minTransformValue = colorPlane.SelectMany(x => x).Select(y => y.GetAbsouluteValue().Real).Min();
+                double maxTransformValue = colorPlane.SelectMany(x => x).Select(y => spectrum.GetValueForSpectrum(y)).Max();
+                double minTransformValue = colorPlane.SelectMany(x => x).Select(y => spectrum.GetValueForSpectrum(y)).Min();
 
                 for (int i = 0; i < image.PixelHeight; i++)
                 {
                     for (int j = 0; j < image.PixelWidth; j++)
                     {
-                        byte value = (byte)NormalizeToPixelValueUsingLog(colorPlane[i][j].GetAbsouluteValue().Real, minTransformValue, maxTransformValue);
+                        byte value = (byte)NormalizeToPixelValueUsingLog(spectrum.GetValueForSpectrum(colorPlane[i][j]), minTransformValue, maxTransformValue);
                         int index = i * stride + j * ImageConstants.bytesPerPixel + c;
                         imagePointer[index] = value;
                     }

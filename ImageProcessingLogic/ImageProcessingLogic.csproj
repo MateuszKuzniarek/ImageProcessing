@@ -48,6 +48,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Spectra\AmplitudeSpectrum.cs" />
+    <Compile Include="Spectra\PhaseSpectrum.cs" />
+    <Compile Include="Spectra\Spectrum.cs" />
     <Compile Include="Utils\ColorChannel.cs" />
     <Compile Include="Utils\Complex.cs" />
     <Compile Include="Utils\ContrastType.cs" />
