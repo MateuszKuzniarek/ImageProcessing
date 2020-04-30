@@ -95,8 +95,9 @@
         <Button Content="Fast North East" Command="{Binding FastNorthEastCommand}" HorizontalAlignment="Left" Margin="9,360,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
         <Button Content="Fast East" Command="{Binding FastEastCommand}" HorizontalAlignment="Left" Margin="9,384,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
         <Button Content="Fast South East" Command="{Binding FastSouthEastCommand}" HorizontalAlignment="Left" Margin="9,408,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
-        <Button Content="Undo" Command="{Binding UndoCommand}" HorizontalAlignment="Left" Margin="59,530,0,0" VerticalAlignment="Top" Width="85" RenderTransformOrigin="0.51,-2.3"/>
+        <Button Content="Undo" Command="{Binding UndoCommand}" HorizontalAlignment="Left" Margin="56,741,0,0" VerticalAlignment="Top" Width="85" RenderTransformOrigin="0.51,-2.3"/>
         <Button Content="Show Amplitude Spectrum" Command="{Binding ShowAmplitudeSpectrumCommand}" HorizontalAlignment="Left" Margin="10,444,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
         <Button Content="Show Phase Spectrum" Command="{Binding ShowPhaseSpectrumCommand}" HorizontalAlignment="Left" Margin="9,468,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
+        <Button Content="Use Filter" Command="{Binding UseFilterCommand}" HorizontalAlignment="Left" Margin="9,492,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
     </Grid>
 </Window>

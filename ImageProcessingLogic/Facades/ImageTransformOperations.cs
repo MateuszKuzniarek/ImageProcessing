@@ -1,4 +1,5 @@
-﻿using ImageProcessingLogic.Spectra;
+﻿using ImageProcessingLogic.Filters;
+using ImageProcessingLogic.Spectra;
 using ImageProcessingLogic.Transforms;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,66 @@ namespace ImageProcessingLogic
         public unsafe static void ShowTransformedImage(WriteableBitmap image, TransformStrategy transformStrategy, Spectrum spectrum)
         {
             List<List<List<Complex>>> transform = TransformImage(image, transformStrategy);
+            SwapQuadrants(transform);
             ShowSpectrum(image, transform, spectrum);
-            SwapQuadrants(image);
+        }
+
+        public unsafe static void ShowFilterEffect(WriteableBitmap image, TransformStrategy transformStrategy, Filter filter)
+        {
+            List<List<List<Complex>>> transform = TransformImage(image, transformStrategy);
+            SwapQuadrants(transform);
+            transform.ForEach(x => filter.ApplyFilter(x));
+            SwapQuadrants(transform);
+            ReverseTransform(transform, transformStrategy);
+            SwapImage(image, transform);
+        }
+
+        private unsafe static void ReverseTransform(List<List<List<Complex>>> transform, TransformStrategy transformStrategy)
+        {
+            for (int c = 0; c < ImageConstants.numberOfColors; c++)
+            {
+                List<List<Complex>> colorPlane = transform[c];
+
+                for (int i = 0; i < colorPlane.Count; i++)
+                {
+                    colorPlane[i] = transformStrategy.ReverseSignalTransform(colorPlane[i]);
+                }
+
+                for (int i = 0; i < colorPlane[0].Count; i++)
+                {
+                    List<Complex> column = Enumerable.Range(0, colorPlane.Count).Select(x => colorPlane[x][i]).ToList();
+                    List<Complex> transformedColumn = transformStrategy.ReverseSignalTransform(column);
+                    for (int j = 0; j < colorPlane.Count; j++)
+                    {
+                        colorPlane[j][i] = transformedColumn[j];
+                    }
+                }
+            }
+        }
+
+        private unsafe static void SwapImage(WriteableBitmap image, List<List<List<Complex>>> newImage)
+        {
+            image.Lock();
+            byte* imagePointer = (byte*)image.BackBuffer;
+            int stride = image.BackBufferStride;
+
+            for (int c = 0; c < ImageConstants.numberOfColors; c++)
+            {
+                List<List<Complex>> colorPlane = newImage[c];
+
+                for (int i = 0; i < image.PixelHeight; i++)
+                {
+                    for (int j = 0; j < image.PixelWidth; j++)
+                    {
+                        byte value = (byte) colorPlane[i][j].Real;
+                        int index = i * stride + j * ImageConstants.bytesPerPixel + c;
+                        imagePointer[index] = value;
+                    }
+                }
+            }
+
+            image.AddDirtyRect(new Int32Rect(0, 0, image.PixelWidth, image.PixelHeight));
+            image.Unlock();
         }
 
         private unsafe static List<List<List<Complex>>> TransformImage(WriteableBitmap image, TransformStrategy transformStrategy)
@@ -58,7 +117,6 @@ namespace ImageProcessingLogic
                         colorPlane[j][i] = transformedColumn[j];
                     }
                 }
-
             }
 
             image.Unlock();
@@ -93,44 +151,37 @@ namespace ImageProcessingLogic
             image.Unlock();
         }
 
-        private unsafe static void SwapQuadrants(WriteableBitmap image)
+        private unsafe static void SwapQuadrants(List<List<List<Complex>>> transform)
         {
-            image.Lock();
-            byte* imagePointer = (byte*)image.BackBuffer;
-            int stride = image.BackBufferStride;
-
-            int halfOfHeight = image.PixelHeight / 2;
-            int halfOfWidth = image.PixelWidth / 2;
+            int Height = transform[0].Count;
+            int Width = transform[0][0].Count;
+            int halfOfHeight = Height / 2;
+            int halfOfWidth = Width / 2;
 
             for (int i = 0; i < halfOfHeight; i++)
             {
-                for (int j = 0; j < image.PixelWidth; j++)
+                for (int j = 0; j < Width; j++)
                 {
                     int iToSwapWith = i + halfOfHeight;
-                    if (iToSwapWith >= image.PixelHeight)
+                    if (iToSwapWith >= Height)
                     {
-                        iToSwapWith -= image.PixelHeight;
+                        iToSwapWith -= Height;
                     }
 
                     int jToSwapWith = j + halfOfWidth;
-                    if (jToSwapWith >= image.PixelWidth)
+                    if (jToSwapWith >= Width)
                     {
-                        jToSwapWith -= image.PixelWidth;
+                        jToSwapWith -= Width;
                     }
 
                     for (int k = 0; k < ImageConstants.numberOfColors; k++)
                     {
-                        int index = i * stride + j * ImageConstants.bytesPerPixel + k;
-                        int indexToSwapWith = iToSwapWith * stride + jToSwapWith * ImageConstants.bytesPerPixel + k;
-                        byte swappedByte = imagePointer[index];
-                        imagePointer[index] = imagePointer[indexToSwapWith];
-                        imagePointer[indexToSwapWith] = swappedByte;
+                        Complex swappedElement = transform[k][i][j];
+                        transform[k][i][j] = transform[k][iToSwapWith][jToSwapWith];
+                        transform[k][iToSwapWith][jToSwapWith] = swappedElement;
                     }
                 }
             }
-
-            image.AddDirtyRect(new Int32Rect(0, 0, image.PixelWidth, image.PixelHeight));
-            image.Unlock();
         }
 
         private static int NormalizeToPixelValueUsingLog(double value, double min, double max)

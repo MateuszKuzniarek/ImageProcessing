@@ -10,7 +10,9 @@ namespace ImageProcessingLogic.Transforms
     {
         abstract public List<Complex> TransformSignal(List<Complex> signal);
 
-        protected Complex GetWCoefficient(double upperCoefficient, double lowerCoefficient)
+        abstract public List<Complex> ReverseSignalTransform(List<Complex> signal);
+
+        protected Complex GetWCoefficient(double upperCoefficient, double lowerCoefficient, bool isNegativeExponent)
         {
             Complex result = new Complex();
             double exponent = (2.0 * Math.PI * upperCoefficient) / lowerCoefficient;

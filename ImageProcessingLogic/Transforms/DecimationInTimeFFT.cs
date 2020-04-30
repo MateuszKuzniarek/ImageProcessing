@@ -6,13 +6,11 @@ namespace ImageProcessingLogic.Transforms
 {
     public class DecimationInTimeFFT : TransformStrategy
     {
-        private List<Complex> wCoefficients = new List<Complex>();
-
         public override List<Complex> TransformSignal(List<Complex> signal)
         {
             List<Complex> cutSignal = CutSignalSamplesToPowerOfTwo(signal);
-            CalculateWCoefficients(cutSignal.Count);
-            List<Complex> result = CalculateFastTransform(cutSignal, 0);
+            List<Complex> wCoefficients = CalculateWCoefficients(cutSignal.Count, false);
+            List<Complex> result = CalculateFastTransform(cutSignal, wCoefficients, 0);
 
             //I think it's not necessary but I'm not sure so I'll leave it commented
             //foreach (Tuple<double, Complex> point in result.Points)
@@ -23,12 +21,17 @@ namespace ImageProcessingLogic.Transforms
             return result;
         }
 
-        public override string ToString()
+        public override List<Complex> ReverseSignalTransform(List<Complex> signal)
         {
-            return "FFT z decymacją w czasie";
+            List<Complex> cutSignal = CutSignalSamplesToPowerOfTwo(signal);
+            List<Complex> wCoefficients = CalculateWCoefficients(cutSignal.Count, true);
+            List<Complex> result = CalculateFastTransform(cutSignal, wCoefficients, 0);
+            Complex divisor = new Complex(result.Count, 0);
+            result = result.Select(x => x = Complex.Divide(x, divisor)).ToList();
+            return result;
         }
 
-        private List<Complex> CalculateFastTransform(List<Complex> signal, int recursionDepth)
+        private List<Complex> CalculateFastTransform(List<Complex> signal, List<Complex> wCoefficients, int recursionDepth)
         {
             List<Complex> evenElements = new List<Complex>();
             List<Complex> oddElements = new List<Complex>();
@@ -42,8 +45,8 @@ namespace ImageProcessingLogic.Transforms
 
             List<Complex> evenElementsTransformed = evenElements;
             List<Complex> oddElementsTransformed = oddElements;
-            if (evenElements.Count > 1) evenElementsTransformed = CalculateFastTransform(evenElements, recursionDepth + 1);
-            if (oddElements.Count > 1) oddElementsTransformed = CalculateFastTransform(oddElements, recursionDepth + 1);
+            if (evenElements.Count > 1) evenElementsTransformed = CalculateFastTransform(evenElements, wCoefficients, recursionDepth + 1);
+            if (oddElements.Count > 1) oddElementsTransformed = CalculateFastTransform(oddElements, wCoefficients, recursionDepth + 1);
 
             List<Complex> result = new List<Complex>();
             result.AddRange(Enumerable.Repeat(Complex.GetZero(), signal.Count));
@@ -58,13 +61,17 @@ namespace ImageProcessingLogic.Transforms
             return result;
         }
 
-        private void CalculateWCoefficients(int vectorSize)
+        private List<Complex> CalculateWCoefficients(int vectorSize, bool forReverseTransform)
         {
+            List<Complex> result = new List<Complex>();
+            int multiplier = forReverseTransform ? -1 : 1;
             int halfOfVectorSize = vectorSize / 2;
             for (int i = 0; i < halfOfVectorSize; i++)
             {
-                wCoefficients.Add(GetWCoefficient(-i, vectorSize));
+                result.Add(GetWCoefficient(-i * multiplier, vectorSize, true));
             }
+
+            return result;
         }
 
         private List<Complex> CutSignalSamplesToPowerOfTwo(List<Complex> signal)

@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.ComponentModel;
 using ImageProcessingLogic.Transforms;
 using ImageProcessingLogic.Spectra;
+using ImageProcessingLogic.Filters;
 
 namespace ImageProcessing
 {
@@ -37,6 +38,7 @@ namespace ImageProcessing
         public ICommand FastSouthEastCommand { get; private set; }
         public ICommand ShowAmplitudeSpectrumCommand { get; private set; }
         public ICommand ShowPhaseSpectrumCommand { get; private set; }
+        public ICommand UseFilterCommand { get; private set; }
         public ICommand UndoCommand { get; private set; }
 
         public ImageAbstraction SelectedImage { get; set; }
@@ -111,6 +113,7 @@ namespace ImageProcessing
             FastSouthEastCommand = new RelayCommand(x => FastSouthEast(), x => (SelectedImage != null));
             ShowAmplitudeSpectrumCommand = new RelayCommand(x => ShowAmplitudeSpectrum(), x => (SelectedImage != null));
             ShowPhaseSpectrumCommand = new RelayCommand(x => ShowPhaseSpectrum(), x => (SelectedImage != null));
+            UseFilterCommand = new RelayCommand(x => UseFilter(), x => (SelectedImage != null));
             UndoCommand = new RelayCommand(x => Undo(), x => (SelectedImage != null));
         }
 
@@ -135,6 +138,11 @@ namespace ImageProcessing
         private void ShowPhaseSpectrum()
         {
             ImageTransformOperations.ShowTransformedImage(SelectedImage.Bitmap, new DecimationInTimeFFT(), new PhaseSpectrum());
+        }
+
+        private void UseFilter()
+        {
+            ImageTransformOperations.ShowFilterEffect(SelectedImage.Bitmap, new DecimationInTimeFFT(), new LowPassFilter(50));
         }
 
         private void FastNorth()
