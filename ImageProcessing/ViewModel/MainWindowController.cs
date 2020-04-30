@@ -126,7 +126,7 @@ namespace ImageProcessing
 
         private void DecimationInTimeFFT()
         {
-            ImageTransformOperations.TransformImageUsingDecimationInTimeFFT(SelectedImage.Bitmap);
+            ImageTransformOperations.ShowTransformedImage(SelectedImage.Bitmap, new DecimationInTimeFFT());
         }
 
         private void FastNorth()

@@ -11,65 +11,78 @@ namespace ImageProcessingLogic
 {
     public static class ImageTransformOperations
     {
-        public unsafe static void TransformImageUsingDecimationInTimeFFT(WriteableBitmap image)
+        public unsafe static void ShowTransformedImage(WriteableBitmap image, TransformStrategy transformStrategy)
         {
-            List<List<Complex>> transform = TransformImage(image, new DecimationInTimeFFT());
+            List<List<List<Complex>>> transform = TransformImage(image, transformStrategy);
             ShowSpectrum(image, transform);
             SwapQuadrants(image);
         }
 
-        private unsafe static List<List<Complex>> TransformImage(WriteableBitmap image, TransformStrategy transformStrategy)
+        private unsafe static List<List<List<Complex>>> TransformImage(WriteableBitmap image, TransformStrategy transformStrategy)
         {
             image.Lock();
             byte* imagePointer = (byte*)image.BackBuffer;
             int stride = image.BackBufferStride;
 
-            List<List<Complex>> transformedImage = new List<List<Complex>>();
-            for (int i = 0; i < image.PixelHeight; i++)
+            List<List<List<Complex>>> transformedImage = new List<List<List<Complex>>>();
+            for (int c = 0; c < ImageConstants.numberOfColors; c++)
             {
-                List<Complex> row = new List<Complex>();
+                List<List<Complex>> colorPlane = new List<List<Complex>>();
 
-                for (int j = 0; j < image.PixelWidth; j++)
+                for (int i = 0; i < image.PixelHeight; i++)
                 {
-                    int index = i * stride + j * ImageConstants.bytesPerPixel;
-                    row.Add(new Complex(imagePointer[index], 0));
+                    List<Complex> row = new List<Complex>();
+
+                    for (int j = 0; j < image.PixelWidth; j++)
+                    {
+                        int index = i * stride + j * ImageConstants.bytesPerPixel + c;
+                        row.Add(new Complex(imagePointer[index], 0));
+                    }
+
+                    colorPlane.Add(transformStrategy.TransformSignal(row));
                 }
 
-                transformedImage.Add(transformStrategy.TransformSignal(row));
+                transformedImage.Add(colorPlane);
             }
 
-            for (int i = 0; i < image.PixelWidth; i++)
+            for (int c = 0; c < ImageConstants.numberOfColors; c++)
             {
-                List<Complex> column = Enumerable.Range(0, transformedImage.Count).Select(x => transformedImage[x][i]).ToList();
-                List<Complex> transformedColumn = transformStrategy.TransformSignal(column);
-                for (int j = 0; j < transformedImage.Count; j++)
+                List<List<Complex>> colorPlane = transformedImage[c];
+                for (int i = 0; i < image.PixelWidth; i++)
                 {
-                    transformedImage[j][i] = transformedColumn[j];
+                    List<Complex> column = Enumerable.Range(0, colorPlane.Count).Select(x => colorPlane[x][i]).ToList();
+                    List<Complex> transformedColumn = transformStrategy.TransformSignal(column);
+                    for (int j = 0; j < colorPlane.Count; j++)
+                    {
+                        colorPlane[j][i] = transformedColumn[j];
+                    }
                 }
+
             }
-            
+
             image.Unlock();
 
             return transformedImage;
         }
 
-        private unsafe static void ShowSpectrum(WriteableBitmap image, List<List<Complex>> transform)
+        private unsafe static void ShowSpectrum(WriteableBitmap image, List<List<List<Complex>>> transform)
         {
             image.Lock();
             byte* imagePointer = (byte*)image.BackBuffer;
             int stride = image.BackBufferStride;
-            
-            double maxTransformValue = transform.SelectMany(x => x).Select(y => y.GetAbsouluteValue().Real).Max();
-            double minTransformValue = transform.SelectMany(x => x).Select(y => y.GetAbsouluteValue().Real).Min();
 
-            for (int i = 0; i < image.PixelHeight; i++)
+            for (int c = 0; c < ImageConstants.numberOfColors; c++)
             {
-                for (int j = 0; j < image.PixelWidth; j++)
+                List<List<Complex>> colorPlane = transform[c];
+                double maxTransformValue = colorPlane.SelectMany(x => x).Select(y => y.GetAbsouluteValue().Real).Max();
+                double minTransformValue = colorPlane.SelectMany(x => x).Select(y => y.GetAbsouluteValue().Real).Min();
+
+                for (int i = 0; i < image.PixelHeight; i++)
                 {
-                    byte value = (byte)NormalizeToPixelValueUsingLog(transform[i][j].GetAbsouluteValue().Real, minTransformValue, maxTransformValue);
-                    for (int k = 0; k < ImageConstants.numberOfColors; k++)
+                    for (int j = 0; j < image.PixelWidth; j++)
                     {
-                        int index = i * stride + j * ImageConstants.bytesPerPixel + k;
+                        byte value = (byte)NormalizeToPixelValueUsingLog(colorPlane[i][j].GetAbsouluteValue().Real, minTransformValue, maxTransformValue);
+                        int index = i * stride + j * ImageConstants.bytesPerPixel + c;
                         imagePointer[index] = value;
                     }
                 }
@@ -93,7 +106,7 @@ namespace ImageProcessingLogic
                 for (int j = 0; j < image.PixelWidth; j++)
                 {
                     int iToSwapWith = i + halfOfHeight;
-                    if(iToSwapWith >= image.PixelHeight)
+                    if (iToSwapWith >= image.PixelHeight)
                     {
                         iToSwapWith -= image.PixelHeight;
                     }
@@ -125,7 +138,7 @@ namespace ImageProcessingLogic
             double normalizedMax = 255;
 
             double logCoeficient = (Math.Log(1 + (value - min), 2) / (Math.Log(1 + (max - min), 2)));
-            int result = (int) (logCoeficient * (normalizedMax - normalizedMin) + normalizedMin);
+            int result = (int)(logCoeficient * (normalizedMax - normalizedMin) + normalizedMin);
             return result;
         }
     }
