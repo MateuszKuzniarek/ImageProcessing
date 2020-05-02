@@ -123,7 +123,7 @@ namespace ImageProcessing
 
         private void createFilterDictionary()
         {
-            filterDictionary.Add("F1", new LowPassFilter(20));
+            filterDictionary.Add("F1", new LowPassFilter(10));
             filterDictionary.Add("F2", new HighPassFilter(30));
         }
 
