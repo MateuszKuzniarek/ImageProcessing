@@ -12,6 +12,7 @@ using System.ComponentModel;
 using ImageProcessingLogic.Transforms;
 using ImageProcessingLogic.Spectra;
 using ImageProcessingLogic.Filters;
+using System.Collections.Generic;
 
 namespace ImageProcessing
 {
@@ -52,6 +53,8 @@ namespace ImageProcessing
         public int GMin { get; set; } = 50;
         public int GMax { get; set; } = 200;
         public int R { get; set; } = 5;
+        public string Filter { get; set; } = "F1";
+        public Dictionary<string, Filter> filterDictionary = new Dictionary<string, Filter>();
 
         public string Error { get => null; }
         public string this[string columnName]
@@ -93,6 +96,7 @@ namespace ImageProcessing
 
         public MainWindowController()
         {
+            createFilterDictionary();
             LoadImageCommand = new RelayCommand(x => LoadImage());
             SaveImageCommand = new RelayCommand(x => SaveImage(), x => SelectedImage != null);
             IncreaseBrightnessCommand = new RelayCommand(x => ChangeBrightness(BrightnessChange), x => SelectedImage != null);
@@ -115,6 +119,12 @@ namespace ImageProcessing
             ShowPhaseSpectrumCommand = new RelayCommand(x => ShowPhaseSpectrum(), x => (SelectedImage != null));
             UseFilterCommand = new RelayCommand(x => UseFilter(), x => (SelectedImage != null));
             UndoCommand = new RelayCommand(x => Undo(), x => (SelectedImage != null));
+        }
+
+        private void createFilterDictionary()
+        {
+            filterDictionary.Add("F1", new LowPassFilter(20));
+            filterDictionary.Add("F2", new HighPassFilter(30));
         }
 
         private void Undo()
@@ -142,7 +152,7 @@ namespace ImageProcessing
 
         private void UseFilter()
         {
-            ImageTransformOperations.ShowFilterEffect(SelectedImage.Bitmap, new DecimationInTimeFFT(), new LowPassFilter(50));
+            ImageTransformOperations.ShowFilterEffect(SelectedImage.Bitmap, new DecimationInTimeFFT(), filterDictionary[Filter]);
         }
 
         private void FastNorth()

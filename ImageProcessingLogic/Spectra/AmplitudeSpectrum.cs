@@ -11,6 +11,7 @@ namespace ImageProcessingLogic.Spectra
         public override double GetValueForSpectrum(Complex number)
         {
             return number.GetAbsouluteValue().Real;
+            //return Math.Sqrt(number.Real * number.Real + number.Imaginary * number.Imaginary);
         }
     }
 }

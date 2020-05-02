@@ -23,9 +23,20 @@ namespace ImageProcessing
         public MainWindow()
         {
             InitializeComponent();
+            FilterList.Items.Add("F1");
+            FilterList.Items.Add("F2");
+            FilterList.Items.Add("F3");
+            FilterList.Items.Add("F4");
+            FilterList.Items.Add("F5");
+            FilterList.SelectedIndex = 0;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
