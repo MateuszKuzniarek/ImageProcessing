@@ -41,6 +41,8 @@ namespace ImageProcessing
         public ICommand ShowPhaseSpectrumCommand { get; private set; }
         public ICommand UseFilterCommand { get; private set; }
         public ICommand UndoCommand { get; private set; }
+        public ICommand SpectrumFilterCommand { get; set; }
+        public ICommand SegmentationCommand { get; set; }
 
         public ImageAbstraction SelectedImage { get; set; }
         public ObservableCollection<ImageAbstraction> Images { get; set; } = new ObservableCollection<ImageAbstraction>();
@@ -55,6 +57,11 @@ namespace ImageProcessing
         public int R { get; set; } = 5;
         public string Filter { get; set; } = "F1";
         public Dictionary<string, Filter> filterDictionary = new Dictionary<string, Filter>();
+        public double FilterInput1 { get; set; } = 0;
+        public double FilterInput2 { get; set; } = 0;
+        public double FilterInput3 { get; set; } = 0;
+        public double k { get; set; } = 0;
+        public double l { get; set; } = 0;
 
         public string Error { get => null; }
         public string this[string columnName]
@@ -96,7 +103,6 @@ namespace ImageProcessing
 
         public MainWindowController()
         {
-            createFilterDictionary();
             LoadImageCommand = new RelayCommand(x => LoadImage());
             SaveImageCommand = new RelayCommand(x => SaveImage(), x => SelectedImage != null);
             IncreaseBrightnessCommand = new RelayCommand(x => ChangeBrightness(BrightnessChange), x => SelectedImage != null);
@@ -117,14 +123,30 @@ namespace ImageProcessing
             FastSouthEastCommand = new RelayCommand(x => FastSouthEast(), x => (SelectedImage != null));
             ShowAmplitudeSpectrumCommand = new RelayCommand(x => ShowAmplitudeSpectrum(), x => (SelectedImage != null));
             ShowPhaseSpectrumCommand = new RelayCommand(x => ShowPhaseSpectrum(), x => (SelectedImage != null));
-            UseFilterCommand = new RelayCommand(x => UseFilter(), x => (SelectedImage != null));
+            UseFilterCommand = new RelayCommand(x => UseFilter(), x => SelectedImage != null);
             UndoCommand = new RelayCommand(x => Undo(), x => (SelectedImage != null));
+            SpectrumFilterCommand = new RelayCommand(x => SpectrumFilter(), x => SelectedImage != null);
+            SegmentationCommand = new RelayCommand(x => Segmentation(), x => SelectedImage != null);
         }
 
-        private void createFilterDictionary()
+        private void Segmentation()
         {
-            filterDictionary.Add("F1", new LowPassFilter(10));
-            filterDictionary.Add("F2", new HighPassFilter(30));
+            ImageOperations.Segmentation(SelectedImage.Bitmap);
+        }
+
+        private void SpectrumFilter()
+        {
+            ImageTransformOperations.ShowFilterEffect(SelectedImage.Bitmap, new DecimationInTimeFFT(), new SpectrumFilter(k, l));
+        }
+
+        private void CreateFilterDictionary()
+        {
+            filterDictionary.Clear();
+            filterDictionary.Add("F1", new LowPassFilter(FilterInput1));
+            filterDictionary.Add("F2", new HighPassFilter(FilterInput1));
+            filterDictionary.Add("F3", new BandPassFilter(FilterInput2, FilterInput1));
+            filterDictionary.Add("F4", new BandStopFilter(FilterInput3, FilterInput1));
+            filterDictionary.Add("F5", new EdgeDetectionFilter(FilterInput1, FilterInput2, FilterInput3));
         }
 
         private void Undo()
@@ -152,6 +174,7 @@ namespace ImageProcessing
 
         private void UseFilter()
         {
+            CreateFilterDictionary();
             ImageTransformOperations.ShowFilterEffect(SelectedImage.Bitmap, new DecimationInTimeFFT(), filterDictionary[Filter]);
         }
 

@@ -38,7 +38,45 @@ namespace ImageProcessing
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            CheckFields();
+        }
 
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void CheckFields()
+        {
+            if (FilterList.SelectedIndex == 0 || FilterList.SelectedIndex == 1)
+            {
+                FilterInput2.IsEnabled = false;
+                FilterInput3.IsEnabled = false;
+                FilterInput2.Text = "--";
+                FilterInput3.Text = "--";
+                FilterField1.Text = "R: ";
+                FilterField2.Text = "";
+                FilterField3.Text = "";
+            }
+            else if (FilterList.SelectedIndex == 2 || FilterList.SelectedIndex == 3)
+            {
+                FilterInput2.IsEnabled = true;
+                FilterInput3.IsEnabled = false;
+                FilterInput2.Text = "";
+                FilterInput3.Text = "--";
+                FilterField1.Text = "R1: ";
+                FilterField2.Text = "R2: ";
+                FilterField3.Text = "";
+            }else if (FilterList.SelectedIndex == 4)
+            {
+                FilterInput2.IsEnabled = true;
+                FilterInput3.IsEnabled = true;
+                FilterInput2.Text = "";
+                FilterInput3.Text = "";
+                FilterField1.Text = "R: ";
+                FilterField2.Text = "H: ";
+                FilterField3.Text = "A: ";
+            }
         }
     }
 }

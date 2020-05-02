@@ -18,26 +18,13 @@ namespace ImageProcessingLogic
             List<List<List<Complex>>> transform = TransformImage(image, transformStrategy);
             SwapQuadrants(transform);
             ShowSpectrum(image, transform, spectrum);
-
-
-            //SwapQuadrants(transform);
-            //ReverseTransform(transform, transformStrategy);
-            //SwapImage(image, transform);
         }
 
         public unsafe static void ShowFilterEffect(WriteableBitmap image, TransformStrategy transformStrategy, Filter filter)
         {
             List<List<List<Complex>>> transform = TransformImage(image, transformStrategy);
             SwapQuadrants(transform);
-            //int[][] mask = new int[][];
             transform.ForEach(x => filter.ApplyFilter(x));
-            //
-
-            //transform.ForEach(x => new LowPassFilter(40).ApplyFilter(x));
-
-
-            //ShowSpectrum(image, transform, new AmplitudeSpectrum());
-            //transform.ForEach(x => filter.CreateMask(x, mask));
             SwapQuadrants(transform);
             ReverseTransform(transform, transformStrategy);
             SwapImage(image, transform);
@@ -142,7 +129,6 @@ namespace ImageProcessingLogic
             image.Lock();
             byte* imagePointer = (byte*)image.BackBuffer;
             int stride = image.BackBufferStride;
-            double xx = imagePointer[10000];
 
             for (int c = 0; c < ImageConstants.numberOfColors; c++)
             {
@@ -157,10 +143,6 @@ namespace ImageProcessingLogic
                         byte value = (byte)NormalizeToPixelValueUsingLog(spectrum.GetValueForSpectrum(colorPlane[i][j]), minTransformValue, maxTransformValue);
                         int index = i * stride + j * ImageConstants.bytesPerPixel + c;
                         imagePointer[index] = value;
-                        if(index == 10000)
-                        {
-
-                        }
                     }
                 }
             }

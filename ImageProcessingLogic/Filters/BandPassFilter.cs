@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace ImageProcessingLogic.Filters
 {
-    public class HighPassFilter : Filter
+    public class BandPassFilter : Filter
     {
-        private readonly double radius;
-
-        public HighPassFilter(double radius)
+        double radiusOut;
+        double radiusIn;
+        public BandPassFilter(double radiusOut, double radiusIn)
         {
-            this.radius = radius;
+            this.radiusOut = radiusOut;
+            this.radiusIn = radiusIn;
         }
-
         public override void ApplyFilter(List<List<Complex>> transform)
         {
             int centerI = transform.Count / 2;
@@ -26,7 +26,11 @@ namespace ImageProcessingLogic.Filters
                     int iDifference = i - centerI;
                     int jDifference = j - centerJ;
                     double distance = Math.Sqrt((iDifference * iDifference) + (jDifference * jDifference));
-                    if (0 < distance && distance < radius)
+                    if (0 < distance && distance < radiusIn)
+                    {
+                        transform[i][j] = Complex.GetZero();
+                    }
+                    if (distance > radiusOut)
                     {
                         transform[i][j] = Complex.GetZero();
                     }

@@ -48,6 +48,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Filters\BandPassFilter.cs" />
+    <Compile Include="Filters\BandStopFilter.cs" />
+    <Compile Include="Filters\SpectrumFilter.cs" />
+    <Compile Include="Filters\EdgeDetectionFilter.cs" />
     <Compile Include="Filters\HighPassFilter.cs" />
     <Compile Include="Filters\Filter.cs" />
     <Compile Include="Filters\LowPassFilter.cs" />

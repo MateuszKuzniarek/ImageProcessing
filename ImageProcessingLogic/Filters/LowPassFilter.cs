@@ -32,27 +32,5 @@ namespace ImageProcessingLogic.Filters
                 }
             }
         }
-
-        public override void CreateMask(List<List<Complex>> transform, int[][] mask)
-        {
-            for (int i = 0; i < transform.Count; i++)
-            {
-                for (int j = 0; j < transform.Count; j++)
-                {
-                    int centerI = transform.Count / 2;
-                    int centerJ = transform[0].Count / 2;
-                    int iDifference = i - centerI;
-                    int jDifference = j - centerJ;
-                    if (Math.Sqrt((iDifference * iDifference) + (jDifference * jDifference)) > radius)
-                    {
-                        mask[i][j] = 0;
-                    }
-                    else
-                    {
-                        mask[i][j] = 1;
-                    }
-                }
-            }
-        }
     }
 }
