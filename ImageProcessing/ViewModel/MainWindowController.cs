@@ -47,8 +47,10 @@ namespace ImageProcessing
         public ICommand UndoCommand { get; private set; }
         public ICommand SpectrumFilterCommand { get; set; }
         public ICommand SegmentationCommand { get; set; }
+        public ICommand ShowMaskCommand { get; set; }
 
         public ImageAbstraction SelectedImage { get; set; }
+        public List<WriteableBitmap> segmentationBitmaps { get; set; }
         public ObservableCollection<ImageAbstraction> Images { get; set; } = new ObservableCollection<ImageAbstraction>();
         public ObservableCollection<ImageAbstraction> OriginalImages { get; set; } = new ObservableCollection<ImageAbstraction>();
         public int BrightnessChange { get; set; } = 1;
@@ -66,6 +68,9 @@ namespace ImageProcessing
         public double FilterInput3 { get; set; } = 0;
         public double k { get; set; } = 0;
         public double l { get; set; } = 0;
+        public int NumberOfMasks { get; set; } = 5;
+        public int Treshhold { get; set; } = 6;
+        public int MaskNumber { get; set; } = 0;
 
         public string Error { get => null; }
         public string this[string columnName]
@@ -131,12 +136,21 @@ namespace ImageProcessing
             UndoCommand = new RelayCommand(x => Undo(), x => (SelectedImage != null));
             SpectrumFilterCommand = new RelayCommand(x => SpectrumFilter(), x => SelectedImage != null);
             SegmentationCommand = new RelayCommand(x => Segmentation(), x => SelectedImage != null);
+            ShowMaskCommand = new RelayCommand(x => ShowMask(), x => SelectedImage != null);
+        }
+
+        private void ShowMask()
+        {
+            if(MaskNumber != 0)
+            {
+                SegmentationOperations.ShowMask(SelectedImage.Bitmap, segmentationBitmaps[MaskNumber - 1]);
+            }
         }
 
         private void Segmentation()
         {
-            List<WriteableBitmap> bitmaps = SegmentationOperations.Segmentation(SelectedImage.Bitmap, 8);
-            SaveBitmaps(bitmaps);
+            segmentationBitmaps = SegmentationOperations.Segmentation(SelectedImage.Bitmap, NumberOfMasks, Treshhold);
+            SaveBitmaps(segmentationBitmaps);
         }
 
         private void SpectrumFilter()

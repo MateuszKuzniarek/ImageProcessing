@@ -95,7 +95,7 @@
         <Button Content="Fast North East" Command="{Binding FastNorthEastCommand}" HorizontalAlignment="Left" Margin="9,360,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
         <Button Content="Fast East" Command="{Binding FastEastCommand}" HorizontalAlignment="Left" Margin="9,384,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
         <Button Content="Fast South East" Command="{Binding FastSouthEastCommand}" HorizontalAlignment="Left" Margin="9,408,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
-        <Button Content="Undo" Command="{Binding UndoCommand}" HorizontalAlignment="Left" Margin="56,641,0,0" VerticalAlignment="Top" Width="85" RenderTransformOrigin="0.51,-2.3"/>
+        <Button Content="Undo" Command="{Binding UndoCommand}" HorizontalAlignment="Left" Margin="56,676,0,0" VerticalAlignment="Top" Width="85" RenderTransformOrigin="0.51,-2.3"/>
         <Button Content="Show Amplitude Spectrum" Command="{Binding ShowAmplitudeSpectrumCommand}" HorizontalAlignment="Left" Margin="10,444,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
         <Button Content="Show Phase Spectrum" Command="{Binding ShowPhaseSpectrumCommand}" HorizontalAlignment="Left" Margin="9,468,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
         <Button Content="Apply" Command="{Binding UseFilterCommand}" HorizontalAlignment="Left" Margin="124,492,0,0" VerticalAlignment="Top" Width="70" RenderTransformOrigin="0.51,-2.3"/>
@@ -113,6 +113,14 @@
         <TextBlock Text="l: " TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="20" Margin="70,566,0,0"/>
         <TextBox Text="{Binding l}" HorizontalAlignment="Left" Height="20" Margin="85,564,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" TextChanged="TextBox_TextChanged"/>
         <Button Content="Apply" Command="{Binding SpectrumFilterCommand}" HorizontalAlignment="Left" Margin="124,564,0,0" VerticalAlignment="Top" Width="70" RenderTransformOrigin="0.51,-2.3"/>
-        <Button Content="Segmentation" Command="{Binding SegmentationCommand}" HorizontalAlignment="Left" Margin="12,597,0,0" VerticalAlignment="Top" Width="182" RenderTransformOrigin="0.51,-2.3"/>
+        <TextBlock Text="Number of masks: " TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="98" Margin="11,605,0,0"/>
+        <TextBox Name ="NumberOfMasks" Text="{Binding NumberOfMasks}" HorizontalAlignment="Left" Height="20" Margin="155,604,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" TextChanged="TextBox_TextChanged"/>
+        <TextBlock Text="Threshold : " TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="61" Margin="11,624,0,0"/>
+        <TextBox Text="{Binding Treshhold}" HorizontalAlignment="Left" Height="20" Margin="155,626,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" TextChanged="TextBox_TextChanged" RenderTransformOrigin="-0.117,0.85"/>
+        <Button Content="Calculate" Command="{Binding SegmentationCommand}" HorizontalAlignment="Left" Margin="9,651,0,0" VerticalAlignment="Top" Width="56" RenderTransformOrigin="0.51,-2.3" Click="Button_Click_1"/>
+        <ComboBox Text="{Binding MaskNumber}" Name="MasksList" HorizontalAlignment="Left" Margin="106,651,0,0" VerticalAlignment="Top" Width="44" Height="20" RenderTransformOrigin="0.51,-2.3" SelectionChanged="ComboBox_SelectionChanged" IsSynchronizedWithCurrentItem="True" IsReadOnly="True"/>
+        <Button Content="Show" Command="{Binding ShowMaskCommand}" HorizontalAlignment="Left" Margin="155,651,0,0" VerticalAlignment="Top" Width="39" RenderTransformOrigin="0.51,-2.3" Click="Button_Click_2"/>
+        <TextBlock Text="Segmentation: " TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="50,589,0,0"/>
+        <TextBlock Text="Mask : " TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="33" Margin="70,653,0,0"/>
     </Grid>
 </Window>

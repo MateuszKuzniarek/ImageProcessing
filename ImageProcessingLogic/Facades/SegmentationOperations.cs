@@ -11,7 +11,7 @@ namespace ImageProcessingLogic.Facades
 {
     public static class SegmentationOperations
     {
-        public unsafe static List<WriteableBitmap> Segmentation(WriteableBitmap image, int marginError)
+        public unsafe static List<WriteableBitmap> Segmentation(WriteableBitmap image, int numberOfMasks, int treshhold)
         {
             image.Lock();
             byte* imagePointer = (byte*)image.BackBuffer;
@@ -20,7 +20,7 @@ namespace ImageProcessingLogic.Facades
             Random random = new Random();
             List<int> allFoundPixels = new List<int>();
             List<List<int>> regions = new List<List<int>>();
-            for(int i=0; i<30; i++)
+            for(int i=0; i<numberOfMasks; i++)
             {
                 int startI = random.Next(0, image.PixelHeight);
                 int startJ = random.Next(0, image.PixelWidth);
@@ -32,7 +32,7 @@ namespace ImageProcessingLogic.Facades
                     startIndex = startI * stride + startJ * ImageConstants.bytesPerPixel;
                 }
 
-                List<int> region = FindRegion(startI, startJ, marginError, image, allFoundPixels);
+                List<int> region = FindRegion(startI, startJ, treshhold, image, allFoundPixels);
                 allFoundPixels.AddRange(region);
                 regions.Add(region);
             }
@@ -41,7 +41,7 @@ namespace ImageProcessingLogic.Facades
             return ConvertToWriteableBitmaps(regions, image.PixelWidth, image.PixelWidth);
         }
 
-        private unsafe static List<int> FindRegion(int startI, int startJ, int marginError, WriteableBitmap image, List<int> allFoundPoints)
+        private unsafe static List<int> FindRegion(int startI, int startJ, int treshhold, WriteableBitmap image, List<int> allFoundPoints)
         {
             byte* imagePointer = (byte*)image.BackBuffer;
             int stride = image.BackBufferStride;
@@ -62,7 +62,7 @@ namespace ImageProcessingLogic.Facades
                 List<int> actualValue = GetColorValues(imagePointer, actualIndex);
                 double distance = GetPixelColorDistance(segmentationValue, actualValue);
                 stackPoints.Pop();
-                if (distance < marginError)
+                if (distance < treshhold)
                 {
                     foundPixels.Add(actualIndex);
                     //lewy sąsiad
@@ -172,6 +172,32 @@ namespace ImageProcessingLogic.Facades
             }
 
             return result;
+        }
+
+        public unsafe static void ShowMask(WriteableBitmap image, WriteableBitmap mask)
+        {
+            image.Lock();
+            byte* imagePointer = (byte*)image.BackBuffer;
+            int stride = image.BackBufferStride;
+            byte* maskPointer = (byte*)mask.BackBuffer;
+
+            for (int i = 0; i < image.PixelHeight; i++)
+            {
+                for (int j = 0; j < image.PixelWidth; j++)
+                {
+                    foreach (int colorChannel in ColorChannel.All)
+                    {
+                        int index = i * stride + j * ImageConstants.bytesPerPixel + colorChannel;
+                        if(maskPointer[index] != 0)
+                        {
+                            imagePointer[index] = (byte)255;
+                        }
+                    }
+                }
+            }
+
+            image.AddDirtyRect(new Int32Rect(0, 0, image.PixelWidth, image.PixelHeight));
+            image.Unlock();
         }
     }
 }

@@ -78,5 +78,19 @@ namespace ImageProcessing
                 FilterField3.Text = "A: ";
             }
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            MasksList.Items.Clear();
+            for(int i = 0; i < Int32.Parse(NumberOfMasks.Text); i++)
+            {
+                MasksList.Items.Add(i+1);
+            }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
