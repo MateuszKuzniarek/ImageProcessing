@@ -48,6 +48,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Facades\SegmentationOperations.cs" />
     <Compile Include="Filters\BandPassFilter.cs" />
     <Compile Include="Filters\BandStopFilter.cs" />
     <Compile Include="Filters\SpectrumFilter.cs" />

@@ -13,6 +13,10 @@ using ImageProcessingLogic.Transforms;
 using ImageProcessingLogic.Spectra;
 using ImageProcessingLogic.Filters;
 using System.Collections.Generic;
+using ImageProcessingLogic.Facades;
+using System.Windows.Forms;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
+using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
 namespace ImageProcessing
 {
@@ -131,7 +135,8 @@ namespace ImageProcessing
 
         private void Segmentation()
         {
-            ImageOperations.Segmentation(SelectedImage.Bitmap);
+            List<WriteableBitmap> bitmaps = SegmentationOperations.Segmentation(SelectedImage.Bitmap, 8);
+            SaveBitmaps(bitmaps);
         }
 
         private void SpectrumFilter()
@@ -289,6 +294,27 @@ namespace ImageProcessing
             using (var fileStream = new FileStream(saveFileDialog.FileName, FileMode.Create))
             {
                 encoder.Save(fileStream);
+            }
+        }
+
+        private void SaveBitmaps(List<WriteableBitmap> bitmaps)
+        {
+            var folderBrowserDialog = new FolderBrowserDialog();
+            
+            DialogResult result = folderBrowserDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                string folderName = folderBrowserDialog.SelectedPath;
+                
+                for(int i=0; i< bitmaps.Count; i++)
+                {
+                    BitmapEncoder encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(bitmaps[i]));
+                    using (var fileStream = new FileStream(folderName + "/mask_" + i + ".bmp", FileMode.Create))
+                    {
+                        encoder.Save(fileStream);
+                    }
+                }
             }
         }
 
