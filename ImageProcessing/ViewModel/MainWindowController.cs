@@ -164,7 +164,7 @@ namespace ImageProcessing
             filterDictionary.Add("F1", new LowPassFilter(FilterInput1));
             filterDictionary.Add("F2", new HighPassFilter(FilterInput1));
             filterDictionary.Add("F3", new BandPassFilter(FilterInput2, FilterInput1));
-            filterDictionary.Add("F4", new BandStopFilter(FilterInput3, FilterInput1));
+            filterDictionary.Add("F4", new BandStopFilter(FilterInput2, FilterInput1));
             filterDictionary.Add("F5", new EdgeDetectionFilter(FilterInput1, FilterInput2, FilterInput3));
         }
 
