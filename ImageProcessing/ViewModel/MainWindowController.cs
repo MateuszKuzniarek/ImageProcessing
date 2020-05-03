@@ -61,7 +61,7 @@ namespace ImageProcessing
         public int GMin { get; set; } = 50;
         public int GMax { get; set; } = 200;
         public int R { get; set; } = 5;
-        public string Filter { get; set; } = "F1";
+        public string Filter { get; set; } = "Low Pass";
         public Dictionary<string, Filter> filterDictionary = new Dictionary<string, Filter>();
         public double FilterInput1 { get; set; } = 0;
         public double FilterInput2 { get; set; } = 0;
@@ -161,11 +161,11 @@ namespace ImageProcessing
         private void CreateFilterDictionary()
         {
             filterDictionary.Clear();
-            filterDictionary.Add("F1", new LowPassFilter(FilterInput1));
-            filterDictionary.Add("F2", new HighPassFilter(FilterInput1));
-            filterDictionary.Add("F3", new BandPassFilter(FilterInput2, FilterInput1));
-            filterDictionary.Add("F4", new BandStopFilter(FilterInput2, FilterInput1));
-            filterDictionary.Add("F5", new EdgeDetectionFilter(FilterInput1, FilterInput2, FilterInput3));
+            filterDictionary.Add("Low Pass", new LowPassFilter(FilterInput1));
+            filterDictionary.Add("High Pass", new HighPassFilter(FilterInput1));
+            filterDictionary.Add("Band Pass", new BandPassFilter(FilterInput2, FilterInput1));
+            filterDictionary.Add("Band Stop", new BandStopFilter(FilterInput2, FilterInput1));
+            filterDictionary.Add("Edge Detection", new EdgeDetectionFilter(FilterInput1, FilterInput2, FilterInput3));
         }
 
         private void Undo()

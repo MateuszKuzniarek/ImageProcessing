@@ -23,11 +23,11 @@ namespace ImageProcessing
         public MainWindow()
         {
             InitializeComponent();
-            FilterList.Items.Add("F1");
-            FilterList.Items.Add("F2");
-            FilterList.Items.Add("F3");
-            FilterList.Items.Add("F4");
-            FilterList.Items.Add("F5");
+            FilterList.Items.Add("Low Pass");
+            FilterList.Items.Add("High Pass");
+            FilterList.Items.Add("Band Pass");
+            FilterList.Items.Add("Band Stop");
+            FilterList.Items.Add("Edge Detection");
             FilterList.SelectedIndex = 0;
         }
 
