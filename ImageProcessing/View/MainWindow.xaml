@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImageProcessing"
         mc:Ignorable="d"
-        Title="Image Processing Ultimate 2020 Pro" Height="800" Width="1200">
+        Title="Image Processing Ultimate 2020 Pro" Height="800" Width="1400">
     <Window.DataContext>
         <local:MainWindowController/>
     </Window.DataContext>
@@ -49,7 +49,7 @@
             </TextBox.Text>
         </TextBox>
         <Button Content="Apply" Command="{Binding MedianFilterCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Margin="146,200,0,0" Height="21"/>
-        <TabControl ItemsSource="{Binding Images}" SelectedItem="{Binding SelectedImage}" HorizontalAlignment="Left" Height="750" Margin="200,10,0,0" VerticalAlignment="Top" Width="980">
+        <TabControl ItemsSource="{Binding Images}" SelectedItem="{Binding SelectedImage}" HorizontalAlignment="Left" Height="750" Margin="200,10,0,0" VerticalAlignment="Top" Width="900">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock>
@@ -95,7 +95,7 @@
         <Button Content="Fast North East" Command="{Binding FastNorthEastCommand}" HorizontalAlignment="Left" Margin="9,360,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
         <Button Content="Fast East" Command="{Binding FastEastCommand}" HorizontalAlignment="Left" Margin="9,384,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
         <Button Content="Fast South East" Command="{Binding FastSouthEastCommand}" HorizontalAlignment="Left" Margin="9,408,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
-        <Button Content="Undo" Command="{Binding UndoCommand}" HorizontalAlignment="Left" Margin="9,736,0,0" VerticalAlignment="Top" Width="182" RenderTransformOrigin="0.51,-2.3"/>
+        <Button Content="Undo" Command="{Binding UndoCommand}" HorizontalAlignment="Left" Margin="1114,203,0,0" VerticalAlignment="Top" Width="182" RenderTransformOrigin="0.51,-2.3"/>
         <Button Content="Show Amplitude Spectrum" Command="{Binding ShowAmplitudeSpectrumCommand}" HorizontalAlignment="Left" Margin="10,444,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
         <Button Content="Show Phase Spectrum" Command="{Binding ShowPhaseSpectrumCommand}" HorizontalAlignment="Left" Margin="9,468,0,0" VerticalAlignment="Top" Width="185" RenderTransformOrigin="0.51,-2.3"/>
         <Button Content="Apply Filter" Command="{Binding UseFilterCommand}" HorizontalAlignment="Left" Margin="9,533,0,0" VerticalAlignment="Top" Width="187" RenderTransformOrigin="0.51,-2.3"/>
@@ -113,14 +113,14 @@
         <TextBlock Text="l: " TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="15" Margin="67,609,0,0"/>
         <TextBox Text="{Binding l}" HorizontalAlignment="Left" Height="20" Margin="82,606,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" TextChanged="TextBox_TextChanged"/>
         <Button Content="Apply" Command="{Binding SpectrumFilterCommand}" HorizontalAlignment="Left" Margin="121,606,0,0" VerticalAlignment="Top" Width="70" RenderTransformOrigin="0.51,-2.3"/>
-        <TextBlock Text="Number of masks: " TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="98" Margin="9,659,0,0" RenderTransformOrigin="0.495,0.986"/>
-        <TextBox Name ="NumberOfMasks" Text="{Binding NumberOfMasks}" HorizontalAlignment="Left" Height="20" Margin="153,655,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" TextChanged="TextBox_TextChanged"/>
-        <TextBlock Text="Threshold : " TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="61" Margin="9,681,0,0"/>
-        <TextBox Text="{Binding Treshhold}" HorizontalAlignment="Left" Height="20" Margin="153,680,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" TextChanged="TextBox_TextChanged" RenderTransformOrigin="-0.117,0.85"/>
-        <Button Content="Calculate" Command="{Binding SegmentationCommand}" HorizontalAlignment="Left" Margin="6,705,0,0" VerticalAlignment="Top" Width="56" RenderTransformOrigin="0.51,-2.3" Click="Button_Click_1"/>
-        <ComboBox Text="{Binding MaskNumber}" Name="MasksList" HorizontalAlignment="Left" Margin="103,705,0,0" VerticalAlignment="Top" Width="44" Height="20" RenderTransformOrigin="0.51,-2.3" SelectionChanged="ComboBox_SelectionChanged" IsSynchronizedWithCurrentItem="True" IsReadOnly="True"/>
-        <Button Content="Show" Command="{Binding ShowMaskCommand}" HorizontalAlignment="Left" Margin="152,705,0,0" VerticalAlignment="Top" Width="39" RenderTransformOrigin="0.51,-2.3" Click="Button_Click_2"/>
-        <TextBlock Text="Segmentation: " TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="7,638,0,0"/>
-        <TextBlock Text="Mask : " TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="33" Margin="67,707,0,0"/>
+        <TextBlock Text="Number of masks: " TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="98" Margin="1114,44,0,0" RenderTransformOrigin="0.495,0.986"/>
+        <TextBox Name ="NumberOfMasks" Text="{Binding NumberOfMasks}" HorizontalAlignment="Left" Height="20" Margin="1258,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" TextChanged="TextBox_TextChanged"/>
+        <TextBlock Text="Threshold : " TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Margin="1114,66,0,0"/>
+        <TextBox Text="{Binding Treshhold}" HorizontalAlignment="Left" Height="20" Margin="1258,65,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" TextChanged="TextBox_TextChanged" RenderTransformOrigin="-0.117,0.85"/>
+        <Button Content="Calculate" Command="{Binding SegmentationCommand}" HorizontalAlignment="Left" Margin="1110,90,0,0" VerticalAlignment="Top" Width="56" RenderTransformOrigin="0.51,-2.3" Click="Button_Click_1"/>
+        <ComboBox Text="{Binding MaskNumber}" Name="MasksList" HorizontalAlignment="Left" Margin="1208,90,0,0" VerticalAlignment="Top" Width="44" Height="20" RenderTransformOrigin="0.51,-2.3" SelectionChanged="ComboBox_SelectionChanged" IsSynchronizedWithCurrentItem="True" IsReadOnly="True"/>
+        <Button Content="Show" Command="{Binding ShowMaskCommand}" HorizontalAlignment="Left" Margin="1256,90,0,0" VerticalAlignment="Top" Width="40" RenderTransformOrigin="0.51,-2.3" Click="Button_Click_2"/>
+        <TextBlock Text="Segmentation: " TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="1152,15,0,0"/>
+        <TextBlock Text="Mask : " TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Width="32" Margin="1172,92,0,0"/>
     </Grid>
 </Window>

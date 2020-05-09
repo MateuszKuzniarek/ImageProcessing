@@ -20,7 +20,8 @@ namespace ImageProcessingLogic.Facades
             Random random = new Random();
             List<int> allFoundPixels = new List<int>();
             List<List<int>> regions = new List<List<int>>();
-            for(int i=0; i<numberOfMasks; i++)
+            Dictionary<int, bool> foundPixelsDictionary = new Dictionary<int, bool>();
+            for (int i=0; i<numberOfMasks; i++)
             {
                 int startI = random.Next(0, image.PixelHeight);
                 int startJ = random.Next(0, image.PixelWidth);
@@ -32,7 +33,7 @@ namespace ImageProcessingLogic.Facades
                     startIndex = startI * stride + startJ * ImageConstants.bytesPerPixel;
                 }
 
-                List<int> region = FindRegion(startI, startJ, treshhold, image, allFoundPixels);
+                List<int> region = FindRegion(startI, startJ, treshhold, image, allFoundPixels, foundPixelsDictionary);
                 allFoundPixels.AddRange(region);
                 regions.Add(region);
             }
@@ -41,7 +42,7 @@ namespace ImageProcessingLogic.Facades
             return ConvertToWriteableBitmaps(regions, image.PixelWidth, image.PixelWidth);
         }
 
-        private unsafe static List<int> FindRegion(int startI, int startJ, int treshhold, WriteableBitmap image, List<int> allFoundPoints)
+        private unsafe static List<int> FindRegion(int startI, int startJ, int treshhold, WriteableBitmap image, List<int> allFoundPoints, Dictionary<int, bool> foundPixelsDictionary)
         {
             byte* imagePointer = (byte*)image.BackBuffer;
             int stride = image.BackBufferStride;
@@ -49,11 +50,10 @@ namespace ImageProcessingLogic.Facades
             List<int> segmentationValue = GetColorValues(imagePointer, startIndex);
             List<int> foundPixels = new List<int>();
 
-            List<int> visitedPoints = new List<int>();
-            visitedPoints.AddRange(allFoundPoints);
+            Dictionary<int, bool> visitedPixelsDictionary = new Dictionary<int, bool>();
             Stack<Tuple<int, int>> stackPoints = new Stack<Tuple<int, int>>();
             stackPoints.Push(new Tuple<int, int>(startI, startJ));
-            visitedPoints.Add(startIndex);
+            visitedPixelsDictionary.Add(startIndex, true);
             while (stackPoints.Count > 0)
             {
                 int actualI = stackPoints.Peek().Item1;
@@ -65,44 +65,46 @@ namespace ImageProcessingLogic.Facades
                 if (distance < treshhold)
                 {
                     foundPixels.Add(actualIndex);
+                    foundPixelsDictionary.Add(actualIndex, true);
                     //lewy sąsiad
                     if ((actualJ - 1) >= 0)
                     {
                         int left = actualI * stride + (actualJ - 1) * ImageConstants.bytesPerPixel;
-                        if (!visitedPoints.Contains(left))
+                        
+                        if (!visitedPixelsDictionary.ContainsKey(left) && !foundPixelsDictionary.ContainsKey(left))
                         {
                             stackPoints.Push(new Tuple<int, int>(actualI, actualJ - 1));
-                            visitedPoints.Add(left);
+                            visitedPixelsDictionary.Add(left, true);
                         }
                     }
                     //prawy sąsiad
                     if ((actualJ + 1) < image.PixelWidth)
                     {
                         int right = actualI * stride + (actualJ + 1) * ImageConstants.bytesPerPixel;
-                        if (!visitedPoints.Contains(right))
+                        if (!visitedPixelsDictionary.ContainsKey(right) && !foundPixelsDictionary.ContainsKey(right))
                         {
                             stackPoints.Push(new Tuple<int, int>(actualI, actualJ + 1));
-                            visitedPoints.Add(right);
+                            visitedPixelsDictionary.Add(right, true);
                         }
                     }
                     //górny sąsiad
                     if ((actualI - 1) >= 0)
                     {
                         int up = (actualI - 1) * stride + actualJ * ImageConstants.bytesPerPixel;
-                        if (!visitedPoints.Contains(up))
+                        if (!visitedPixelsDictionary.ContainsKey(up) && !foundPixelsDictionary.ContainsKey(up))
                         {
                             stackPoints.Push(new Tuple<int, int>(actualI - 1, actualJ));
-                            visitedPoints.Add(up);
+                            visitedPixelsDictionary.Add(up, true);
                         }
                     }
                     //dolny sąsiad
                     if ((actualI + 1) < image.PixelHeight)
                     {
                         int down = (actualI + 1) * stride + actualJ * ImageConstants.bytesPerPixel;
-                        if (!visitedPoints.Contains(down))
+                        if (!visitedPixelsDictionary.ContainsKey(down) && !foundPixelsDictionary.ContainsKey(down))
                         {
                             stackPoints.Push(new Tuple<int, int>(actualI + 1, actualJ));
-                            visitedPoints.Add(down);
+                            visitedPixelsDictionary.Add(down, true);
                         }
                     }
                 }
