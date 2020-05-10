@@ -67,7 +67,8 @@ namespace ImageProcessingLogic
                 {
                     for (int j = 0; j < image.PixelWidth; j++)
                     {
-                        byte value = (byte) colorPlane[i][j].Real;
+                        double transformValue = Math.Max(0, colorPlane[i][j].Real);
+                        byte value = (byte)transformValue;
                         int index = i * stride + j * ImageConstants.bytesPerPixel + c;
                         imagePointer[index] = value;
                     }
