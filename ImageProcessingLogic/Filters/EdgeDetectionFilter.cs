@@ -43,22 +43,22 @@ namespace ImageProcessingLogic.Filters
                     double distance = Math.Sqrt((iDifference * iDifference) + (jDifference * jDifference));
                     if(newAngle2 >= 90 && newAngle1 < 90)
                     {
-                        if ((a1 * (i - centerI)) > (centerJ - j) && (a2 * (i - centerI)) > (centerJ - j) && distance > 0 && distance > radius)
+                        if (((a1 * (i - centerI)) > (centerJ - j) && (a2 * (i - centerI)) > (centerJ - j)) || (distance > 0 && distance < radius))
                         {
                             transform[i][j] = Complex.GetZero();
                         }
-                        else if ((a1 * (i - centerI)) < (centerJ - j) && (a2 * (i - centerI)) < (centerJ - j) && distance > 0 && distance > radius)
+                        else if (((a1 * (i - centerI)) < (centerJ - j) && (a2 * (i - centerI)) < (centerJ - j)) || (distance > 0 && distance < radius))
                         {
                             transform[i][j] = Complex.GetZero();
                         }
                     }
                     else
                     {
-                        if ((a1 * (i - centerI)) < (centerJ - j) && (a2 * (i - centerI)) > (centerJ - j) && distance > 0 && distance > radius)
+                        if (((a1 * (i - centerI)) < (centerJ - j) && (a2 * (i - centerI)) > (centerJ - j)) || (distance > 0 && distance < radius))
                         {
                             transform[i][j] = Complex.GetZero();
                         }
-                        else if ((a1 * (i - centerI)) > (centerJ - j) && (a2 * (i - centerI)) < (centerJ - j) && distance > 0 && distance > radius)
+                        else if (((a1 * (i - centerI)) > (centerJ - j) && (a2 * (i - centerI)) < (centerJ - j)) || (distance > 0 && distance < radius))
                         {
                             transform[i][j] = Complex.GetZero();
                         }

@@ -20,7 +20,7 @@
             </TextBox.Text>
         </TextBox>
         <TextBlock Text="Mask size " TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="54" Margin="10,0,0,10.4" Height="20" RenderTransformOrigin="0.47,5.135"/>
-        <Button Content="Change size" Command="{Binding CreateMaskCommand}" HorizontalAlignment="Left" Margin="122,0,0,10.4" VerticalAlignment="Bottom" Width="100" RenderTransformOrigin="0.51,-2.3" Height="20"/>
+        <Button Content="Change size" Command="{Binding CreateMaskCommand}" HorizontalAlignment="Left" Margin="122,0,0,10.4" VerticalAlignment="Bottom" Width="100" RenderTransformOrigin="0.51,-2.3" Height="20" Click="Button_Click"/>
         <Button Content="Apply mask" Command="{Binding SaveMaskCommand}" HorizontalAlignment="Left" Margin="273,0,0,10.4" VerticalAlignment="Bottom" Width="100" RenderTransformOrigin="0.51,-2.3" Height="20"/>
         <DataGrid 
             AutoGenerateColumns="False" 

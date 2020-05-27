@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImageProcessing.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,17 +14,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ImageProcessing
+namespace ImageProcessing.View
 {
     /// <summary>
-    /// Logika interakcji dla klasy MaskWindow.xaml
+    /// Logika interakcji dla klasy SoundProcessingMain.xaml
     /// </summary>
-    public partial class MaskWindow : Window
+    public partial class SoundProcessingMain : Window
     {
-        public MaskWindow(WriteableBitmap image)
+        public SoundProcessingMain()
         {
             InitializeComponent();
-            DataContext = new MaskWindowController(this.MaskTable, this, image);
+            DataContext = new SoundProcessingMainController();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

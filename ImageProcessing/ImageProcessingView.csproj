@@ -75,6 +75,7 @@
     <Compile Include="Validators\PositiveIntegerValidationRule.cs" />
     <Compile Include="Validators\MaskSizeValidationRule.cs" />
     <Compile Include="ViewModel\ImageWindowController.cs" />
+    <Compile Include="ViewModel\SoundProcessingMainController.cs" />
     <Compile Include="View\HistogramWindow.xaml.cs">
       <DependentUpon>HistogramWindow.xaml</DependentUpon>
     </Compile>
@@ -88,6 +89,9 @@
     <Compile Include="ViewModel\MaskWindowController.cs" />
     <Compile Include="Utils\ImageAbstraction.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
+    <Compile Include="View\SoundProcessingMain.xaml.cs">
+      <DependentUpon>SoundProcessingMain.xaml</DependentUpon>
+    </Compile>
     <Page Include="View\HistogramWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -109,6 +113,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\MaskWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SoundProcessingMain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
