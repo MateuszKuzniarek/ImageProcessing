@@ -56,6 +56,7 @@
     <Compile Include="Filters\HighPassFilter.cs" />
     <Compile Include="Filters\Filter.cs" />
     <Compile Include="Filters\LowPassFilter.cs" />
+    <Compile Include="SoundProcessing\SoundReader.cs" />
     <Compile Include="Spectra\AmplitudeSpectrum.cs" />
     <Compile Include="Spectra\PhaseSpectrum.cs" />
     <Compile Include="Spectra\Spectrum.cs" />
