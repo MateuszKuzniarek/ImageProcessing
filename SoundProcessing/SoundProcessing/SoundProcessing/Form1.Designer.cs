@@ -28,10 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea11 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea12 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -39,19 +38,19 @@
             this.selectOptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.t4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.f2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.soundChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.chart3 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chart4 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chart5 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.soundChart)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart5)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -62,7 +61,7 @@
             this.optionsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1622, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1862, 28);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -95,59 +94,28 @@
             this.t4ToolStripMenuItem,
             this.f2ToolStripMenuItem});
             this.selectOptionToolStripMenuItem.Name = "selectOptionToolStripMenuItem";
-            this.selectOptionToolStripMenuItem.Size = new System.Drawing.Size(172, 26);
+            this.selectOptionToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.selectOptionToolStripMenuItem.Text = "Select option";
             // 
             // t4ToolStripMenuItem
             // 
             this.t4ToolStripMenuItem.Name = "t4ToolStripMenuItem";
-            this.t4ToolStripMenuItem.Size = new System.Drawing.Size(100, 26);
-            this.t4ToolStripMenuItem.Text = "T4";
+            this.t4ToolStripMenuItem.Size = new System.Drawing.Size(374, 26);
+            this.t4ToolStripMenuItem.Text = "Average magnitude difference function (T4)";
             this.t4ToolStripMenuItem.Click += new System.EventHandler(this.t4ToolStripMenuItem_Click);
             // 
             // f2ToolStripMenuItem
             // 
             this.f2ToolStripMenuItem.Name = "f2ToolStripMenuItem";
-            this.f2ToolStripMenuItem.Size = new System.Drawing.Size(100, 26);
-            this.f2ToolStripMenuItem.Text = "F2";
+            this.f2ToolStripMenuItem.Size = new System.Drawing.Size(374, 26);
+            this.f2ToolStripMenuItem.Text = "Cepstrum (F2)";
             this.f2ToolStripMenuItem.Click += new System.EventHandler(this.f2ToolStripMenuItem_Click);
-            // 
-            // soundChart
-            // 
-            chartArea4.Name = "ChartArea1";
-            this.soundChart.ChartAreas.Add(chartArea4);
-            this.soundChart.Location = new System.Drawing.Point(12, 50);
-            this.soundChart.Name = "soundChart";
-            this.soundChart.Size = new System.Drawing.Size(476, 593);
-            this.soundChart.TabIndex = 1;
-            this.soundChart.Text = "chart1";
-            // 
-            // chart1
-            // 
-            chartArea5.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea5);
-            this.chart1.Location = new System.Drawing.Point(494, 50);
-            this.chart1.Name = "chart1";
-            this.chart1.Size = new System.Drawing.Size(526, 593);
-            this.chart1.TabIndex = 2;
-            this.chart1.Text = "chart1";
-            this.chart1.Click += new System.EventHandler(this.chart1_Click);
-            // 
-            // chart2
-            // 
-            chartArea6.Name = "ChartArea1";
-            this.chart2.ChartAreas.Add(chartArea6);
-            this.chart2.Location = new System.Drawing.Point(1026, 50);
-            this.chart2.Name = "chart2";
-            this.chart2.Size = new System.Drawing.Size(584, 593);
-            this.chart2.TabIndex = 3;
-            this.chart2.Text = "chart2";
             // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(368, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(120, 23);
+            this.button1.Size = new System.Drawing.Size(125, 42);
             this.button1.TabIndex = 4;
             this.button1.Text = "Play sound";
             this.button1.UseVisualStyleBackColor = true;
@@ -156,7 +124,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(171, 5);
+            this.label1.Location = new System.Drawing.Point(161, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(77, 17);
             this.label1.TabIndex = 5;
@@ -166,16 +134,17 @@
             // 
             this.button2.Location = new System.Drawing.Point(532, 4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(165, 23);
+            this.button2.Size = new System.Drawing.Size(159, 40);
             this.button2.TabIndex = 6;
             this.button2.Text = "Play changed sound";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(847, 4);
+            this.button3.Location = new System.Drawing.Point(920, 6);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.Size = new System.Drawing.Size(108, 38);
             this.button3.TabIndex = 7;
             this.button3.Text = "Calculate";
             this.button3.UseVisualStyleBackColor = true;
@@ -183,37 +152,74 @@
             // 
             // chart3
             // 
-            chartArea7.Name = "ChartArea1";
-            this.chart3.ChartAreas.Add(chartArea7);
+            chartArea10.Name = "ChartArea1";
+            this.chart3.ChartAreas.Add(chartArea10);
             this.chart3.Location = new System.Drawing.Point(12, 50);
             this.chart3.Name = "chart3";
-            this.chart3.Size = new System.Drawing.Size(1598, 593);
+            this.chart3.Size = new System.Drawing.Size(1838, 286);
             this.chart3.TabIndex = 8;
             this.chart3.Text = "chart3";
+            // 
+            // chart4
+            // 
+            chartArea11.Name = "ChartArea1";
+            this.chart4.ChartAreas.Add(chartArea11);
+            this.chart4.Location = new System.Drawing.Point(12, 342);
+            this.chart4.Name = "chart4";
+            this.chart4.Size = new System.Drawing.Size(1838, 328);
+            this.chart4.TabIndex = 9;
+            this.chart4.Text = "chart4";
+            // 
+            // chart5
+            // 
+            chartArea12.Name = "ChartArea1";
+            this.chart5.ChartAreas.Add(chartArea12);
+            this.chart5.Location = new System.Drawing.Point(12, 676);
+            this.chart5.Name = "chart5";
+            this.chart5.Size = new System.Drawing.Size(1838, 309);
+            this.chart5.TabIndex = 10;
+            this.chart5.Text = "chart5";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(821, 14);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(58, 22);
+            this.textBox1.TabIndex = 11;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(739, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(76, 17);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Treshhold:";
             // 
             // SoundProcessing
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1622, 655);
+            this.ClientSize = new System.Drawing.Size(1862, 1055);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.chart5);
+            this.Controls.Add(this.chart4);
             this.Controls.Add(this.chart3);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.chart2);
-            this.Controls.Add(this.chart1);
-            this.Controls.Add(this.soundChart);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "SoundProcessing";
             this.Text = "Sound Processing";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.soundChart)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart5)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -224,9 +230,6 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
-        private System.Windows.Forms.DataVisualization.Charting.Chart soundChart;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart2;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem selectOptionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem t4ToolStripMenuItem;
@@ -236,6 +239,10 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart3;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart4;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart5;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label2;
     }
 }
 
