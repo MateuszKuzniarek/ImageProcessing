@@ -114,20 +114,35 @@ namespace SoundProcessing
                 for (int i = 0; i < read / 4; i++)
                 {
                     samples.Add(BitConverter.ToSingle(buffer, i * 4));
-                    chart3.Series["wave"].Points.Add(samples[i]);
                 }
             }
-            double value = samples[samples.Count - 10];
             List<List<double>> listOfFragments = new List<List<double>>();
-            List<double> fragment = new List<double>(); 
-            for(int i = 0; i < (samples.Count - samples.Count%2048); ++i)
+            List<double> fragment = new List<double>();
+            double totalValue = 0.0;
+            double average = 0.0;
+            for (int i = 0; i < (samples.Count - samples.Count % 2048); ++i)
             {
-                fragment.Add(samples[i]);
+                totalValue+= samples[i];
+            }
+            average = Math.Abs(totalValue/samples.Count);
+            for (int i = 0; i < (samples.Count - samples.Count%2048); ++i)
+            {
+                if (Math.Abs(samples[i]) < average*10)
+                {
+                    chart3.Series["wave"].Points.Add(0);
+                    fragment.Add(0.00000001);
+                }
+                else
+                {
+                    chart3.Series["wave"].Points.Add(samples[i]);
+                    fragment.Add(samples[i]);
+                }
                 if(fragment.Count == 2048)
                 {
                     listOfFragments.Add(fragment);
                     fragment = new List<double>();
                 }
+                chart3.Series["wave"].Points.Add(samples[i]);
             }
 
             List<List<double>> delayedSamples = new List<List<double>>();
@@ -164,7 +179,7 @@ namespace SoundProcessing
                     previusValue = delayedSamples[i][j - 2];
                     actualValue = delayedSamples[i][j - 1];
                     nextValue = delayedSamples[i][j];
-                    if (actualValue > previusValue && actualValue > nextValue)
+                    if (actualValue < previusValue && actualValue < nextValue)
                     {
                         sampleNumber = j;
                         break;
@@ -172,9 +187,24 @@ namespace SoundProcessing
                 }
                 for(int j = 0; j < delayedSamples[i].Count; ++j)
                 {
-                    chart5.Series["wave"].Points.Add(1.0 / (sampleNumber * 1.0 / 44100.0));
+                    if (sampleNumber == 1)
+                    {
+                        chart5.Series["wave"].Points.Add(0);
+                    }
+                    else
+                    {
+                        chart5.Series["wave"].Points.Add(44100 / sampleNumber * 2);
+                    }
+                    //chart5.Series["wave"].Points.Add(44100/sampleNumber * 2);
                 }
-                generatedSound.Add(new SoundFragment((int)(1.0 / (sampleNumber * 1.0 / 44100.0)), 2048f / 44100f));
+                if (sampleNumber == 1)
+                {
+                    generatedSound.Add(new SoundFragment((int)(0), (2048f / 44100f) * 0.5f));
+                }
+                else
+                {
+                    generatedSound.Add(new SoundFragment((int)(44100 / sampleNumber * 2), (2048f / 44100f) * 0.5f));
+                }
             }
             saveFile.Filter = "Wave File (*.wav)|*.wav;";
             if (saveFile.ShowDialog() != DialogResult.OK) return;
@@ -190,29 +220,41 @@ namespace SoundProcessing
             saveFileName = "";
             NAudio.Wave.WaveChannel32 wave = new NAudio.Wave.WaveChannel32(new NAudio.Wave.WaveFileReader(readFile.FileName));
 
-            byte[] buffer = new byte[44100];
+            byte[] buffer = new byte[16384];
             int read = 0;
             List<Complex> samplesComplex = new List<Complex>();
+            List<int> zeroFrequency = new List<int>();
             while (wave.Position < wave.Length)
             {
-                read = wave.Read(buffer, 0, 44100);
+                read = wave.Read(buffer, 0, 16384);
                 for (int i = 0; i < read / 4; i++)
                 {
                     samples.Add(BitConverter.ToSingle(buffer, i * 4));
                     samplesComplex.Add(new Complex(samples[i], 0));
-                    chart3.Series["wave"].Points.Add(samples[i]);
                 }
             }
             samplesComplex = CutSignalSamplesToPowerOfTwo(samplesComplex);
-            for (int i = 0; i < samplesComplex.Count; ++i)
-            {
-                //chart3.Series["wave"].Points.Add(samples[i]);
-            }
             List<List<Complex>> listOfFragments = new List<List<Complex>>();
             List<Complex> fragment = new List<Complex>();
+            double totalValue = 0.0;
+            double average = 0.0;
+            for (int i = 0; i < (samplesComplex.Count); ++i)
+            {
+                totalValue += samples[i];
+            }
+            average = Math.Abs(totalValue / samplesComplex.Count);
             for (int i = 0; i < samplesComplex.Count; i++)
             {
-                fragment.Add(new Complex(samples[i] * 0.5 * (1 - Math.Cos((2 * Math.PI * i) / (2048 - 1))), 0));
+                if (Math.Abs(samples[i]) < average * 10)
+                {
+                    chart3.Series["wave"].Points.Add(0);
+                    fragment.Add(new Complex(0.000000000001 * 0.5 * (1 - Math.Cos((2 * Math.PI * i) / (2048 - 1))), 0));
+                }
+                else
+                {
+                    chart3.Series["wave"].Points.Add(samples[i]);
+                    fragment.Add(new Complex(samples[i] * 0.5 * (1 - Math.Cos((2 * Math.PI * i) / (2048 - 1))), 0));
+                }
                 if(fragment.Count == 2048)
                 {
                     listOfFragments.Add(fragment);
@@ -275,10 +317,18 @@ namespace SoundProcessing
                 }
                 for(int k = 0; k < amplitudeSpectrum2[i].Count; ++k)
                 {
-                    chart5.Series["wave"].Points.Add(44100/maxIndex);
                     chart4.Series["wave"].Points.Add(amplitudeSpectrum2[i][k]);
                 }
-                generatedSound.Add(new SoundFragment((int)(44100 / maxIndex), 2048f / 44100f));
+                if (maxIndex == treshhold - 1)
+                {
+                    chart5.Series["wave"].Points.Add(0);
+                    generatedSound.Add(new SoundFragment((int)(0), (2048f / 44100f) * 0.5f));
+                }
+                else
+                {
+                    chart5.Series["wave"].Points.Add(44100 / maxIndex);
+                    generatedSound.Add(new SoundFragment((int)(44100 / maxIndex), (2048f / 44100f) * 0.5f));
+                }
             }
             saveFile.Filter = "Wave File (*.wav)|*.wav;";
             if (saveFile.ShowDialog() != DialogResult.OK) return;
@@ -363,16 +413,6 @@ namespace SoundProcessing
                 result[i] = Complex.Add(evenElementsTransformed[i], product);
                 result[i + halfOfSampleCount] = Complex.Subtract(evenElementsTransformed[i], product);
             }
-            return result;
-        }
-
-        private List<Complex> ReverseSignalTransform(List<Complex> signal)
-        {
-            List<Complex> cutSignal = CutSignalSamplesToPowerOfTwo(signal);
-            List<Complex> wCoefficients = CalculateWCoefficients(cutSignal.Count, true);
-            List<Complex> result = CalculateFastTransform(cutSignal, wCoefficients, 0);
-            Complex divisor = new Complex(result.Count, 0);
-            result = result.Select(x => x = Complex.Divide(x, divisor)).ToList();
             return result;
         }
 
