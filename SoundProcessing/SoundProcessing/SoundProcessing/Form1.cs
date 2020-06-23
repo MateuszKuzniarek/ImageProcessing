@@ -1,4 +1,5 @@
 ﻿using NAudio.Wave;
+using SoundProcessing.Exercise4;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,11 +20,19 @@ namespace SoundProcessing
         public String soundName = "";
         public String saveFileName = "";
         public String selectedOption = "";
+        public String selectedWindow = "";
         bool isFile = false;
         int treshhold = 50;
         OpenFileDialog readFile = new OpenFileDialog();
         SaveFileDialog saveFile = new SaveFileDialog();
         List<SoundFragment> generatedSound = new List<SoundFragment>();
+        public int M = 2049;
+        public int R = 1024;
+        public int N = 2560;
+        public int L = 1023;
+        public int fc = 300;
+        public int powerOf2 = 1;
+        Manager manager = new Manager();
         public SoundProcessing()
         {
             InitializeComponent();
@@ -129,15 +138,14 @@ namespace SoundProcessing
             {
                 if (Math.Abs(samples[i]) < average*10)
                 {
-                    chart3.Series["wave"].Points.Add(0);
                     fragment.Add(0.00000001);
                 }
                 else
                 {
-                    chart3.Series["wave"].Points.Add(samples[i]);
                     fragment.Add(samples[i]);
                 }
-                if(fragment.Count == 2048)
+                chart3.Series["wave"].Points.Add(samples[i]);
+                if (fragment.Count == 2048)
                 {
                     listOfFragments.Add(fragment);
                     fragment = new List<double>();
@@ -247,15 +255,14 @@ namespace SoundProcessing
             {
                 if (Math.Abs(samples[i]) < average * 10)
                 {
-                    chart3.Series["wave"].Points.Add(0);
                     fragment.Add(new Complex(0.000000000001 * 0.5 * (1 - Math.Cos((2 * Math.PI * i) / (2048 - 1))), 0));
                 }
                 else
                 {
-                    chart3.Series["wave"].Points.Add(samples[i]);
                     fragment.Add(new Complex(samples[i] * 0.5 * (1 - Math.Cos((2 * Math.PI * i) / (2048 - 1))), 0));
                 }
-                if(fragment.Count == 2048)
+                chart3.Series["wave"].Points.Add(samples[i]);
+                if (fragment.Count == 2048)
                 {
                     listOfFragments.Add(fragment);
                     fragment = new List<Complex>();
@@ -425,6 +432,152 @@ namespace SoundProcessing
         {
             SoundPlayer player = new SoundPlayer(saveFileName);
             player.PlaySync();
+        }
+
+        private void selectOptionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void rectanToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            selectedWindow = "Rectangular";
+        }
+
+        private void vonHaanWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            selectedWindow = "Haan";
+        }
+
+        private void hammingWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            selectedWindow = "Hamming";
+        }
+
+        private void MValue_TextChanged(object sender, EventArgs e)
+        {
+            M = Int32.Parse(textBox1.Text);
+        }
+
+        private void RValue_TextChanged(object sender, EventArgs e)
+        {
+            R = Int32.Parse(textBox1.Text);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            createSeries();
+            manager = new Manager();
+            saveFileName = "";
+            NAudio.Wave.WaveChannel32 wave = new NAudio.Wave.WaveChannel32(new NAudio.Wave.WaveFileReader(readFile.FileName));
+
+            byte[] buffer = new byte[44100];
+            int read = 0;
+
+            while (wave.Position < wave.Length)
+            {
+                read = wave.Read(buffer, 0, 44100);
+                for (int i = 0; i < read / 4; i++)
+                {
+                    samples.Add(BitConverter.ToSingle(buffer, i * 4));
+                }
+            }
+
+            for (int i = 0; i < samples.Count; ++i)
+            {
+                chart3.Series["wave"].Points.Add(samples[i]);
+            }
+            N = M + L - 1;
+            //time:
+
+            DateTime startTime = DateTime.Now;
+            manager.CreateWindows(samples, M, N, R, selectedWindow);
+            manager.LowPassFIlter(L, fc, N, selectedWindow);
+            for(int i = 0; i < manager.listOfWindows.Count; ++i)
+            {
+                manager.listOfWindows[i] = manager.Time(manager.listOfWindows[i], L);
+            }
+            manager.AddTime(R, samples.Count);
+
+            for (int i = 0; i < manager.result.Count; ++i)
+            {
+                chart4.Series["wave"].Points.Add(manager.result[i]);
+            }
+            DateTime stopTime = DateTime.Now;
+            TimeSpan diff = stopTime - startTime;
+            label5.Text = "Time domain duration: " + diff.TotalMilliseconds.ToString() + "ms";
+
+            //frequency:
+            DateTime startTime2 = DateTime.Now;
+            manager = new Manager();
+            manager.CreateWindows(samples, M, N, R, selectedWindow);
+            manager.LowPassFIlter(L, fc, N, selectedWindow);
+            manager.CreateComplexWindows();
+            manager.CreateComplexCoefficient();
+            manager.Fill0Coefficients();
+            List<Complex> wCoefficients = CalculateWCoefficients(manager.listOfComplexCoefficients.Count, false);
+            List<Complex> wCoefficientsWindows = CalculateWCoefficients(manager.listOfComplexWindows[0].Count, false);
+            
+            manager.listOfComplexCoefficients =  CalculateFastTransform(manager.listOfComplexCoefficients, wCoefficients, 0);
+
+
+            for(int i = 0; i < manager.listOfComplexWindows.Count; ++i)
+            {
+                manager.listOfComplexWindows[i] = CalculateFastTransform(manager.listOfComplexWindows[i], wCoefficientsWindows, 0);
+            }
+            manager.MultiplySpectrum();
+
+
+            List<Complex> wReverseCoefficients = CalculateWCoefficients(manager.resultComplexWindows[0].Count, true);
+            for(int i = 0; i < manager.resultComplexWindows.Count; ++i)
+            {
+                manager.listOfComplexWindows[i] = CalculateFastTransform(manager.resultComplexWindows[i], wReverseCoefficients, 0);
+            }
+            manager.AddReal(M, R, samples.Count);
+            for (int i = 0; i < manager.result.Count; ++i)
+            {
+                chart5.Series["wave"].Points.Add(manager.result[i]);
+                //generatedSound.Add(new SoundFragment((int)(44100 / i * 2), (2048f / 44100f) * 0.5f));
+            }
+            /*saveFile.Filter = "Wave File (*.wav)|*.wav;";
+            if (saveFile.ShowDialog() != DialogResult.OK) return;
+            SoundGenerator waveGenerator = new SoundGenerator(generatedSound);
+            waveGenerator.Save(saveFile.FileName);
+            saveFileName = saveFile.FileName;
+            button2.Enabled = true;
+            generatedSound = new List<SoundFragment>();*/
+            DateTime stopTime2 = DateTime.Now;
+            TimeSpan diff2 = stopTime2 - startTime2;
+            label6.Text = "Time domain duration: " + diff2.TotalMilliseconds.ToString() + "ms";
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+            L = Int32.Parse(textBox4.Text);
+        }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
+        {
+            fc = Int32.Parse(textBox5.Text);
+        }
+
+        private List<Complex> ExtendSignalSamplesToPowerOfTwo(List<Complex> signal)
+        {
+            int powerOfTwo = 1;
+            while (powerOfTwo <= signal.Count)
+            {
+                powerOfTwo *= 2;
+            }
+            List<Complex> result = new List<Complex>();
+            for(int i = 0; i < signal.Count; ++i)
+            {
+                result.Add(signal[i]);
+            }
+            for(int i = signal.Count; i < powerOfTwo; ++i)
+            {
+                result.Add(new Complex(0, 0));
+            }
+            return result;
         }
     }
 }

@@ -54,6 +54,8 @@
     <Compile Include="CustomSoundViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Exercise4\Manager.cs" />
+    <Compile Include="Exercise4\Windows.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
