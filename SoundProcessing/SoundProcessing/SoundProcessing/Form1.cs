@@ -20,7 +20,7 @@ namespace SoundProcessing
         public String soundName = "";
         public String saveFileName = "";
         public String selectedOption = "";
-        public String selectedWindow = "";
+        public String selectedWindow = "Hamming";
         bool isFile = false;
         int treshhold = 50;
         OpenFileDialog readFile = new OpenFileDialog();
@@ -33,6 +33,7 @@ namespace SoundProcessing
         public int fc = 300;
         public int powerOf2 = 1;
         Manager manager = new Manager();
+        Manager managerTime = new Manager();
         public SoundProcessing()
         {
             InitializeComponent();
@@ -456,18 +457,20 @@ namespace SoundProcessing
 
         private void MValue_TextChanged(object sender, EventArgs e)
         {
-            M = Int32.Parse(textBox1.Text);
+            M = Int32.Parse(MValue.Text);
         }
 
         private void RValue_TextChanged(object sender, EventArgs e)
         {
-            R = Int32.Parse(textBox1.Text);
+            R = Int32.Parse(RValue.Text);
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
+            fc = fc / 2;
             createSeries();
             manager = new Manager();
+            managerTime = new Manager();
             saveFileName = "";
             NAudio.Wave.WaveChannel32 wave = new NAudio.Wave.WaveChannel32(new NAudio.Wave.WaveFileReader(readFile.FileName));
 
@@ -482,6 +485,12 @@ namespace SoundProcessing
                     samples.Add(BitConverter.ToSingle(buffer, i * 4));
                 }
             }
+            List<double> lista = new List<double>();
+            for(int i = 0; i < 10000; ++i)
+            {
+                lista.Add(1);
+            }
+            samples = lista;
 
             for (int i = 0; i < samples.Count; ++i)
             {
@@ -491,17 +500,17 @@ namespace SoundProcessing
             //time:
 
             DateTime startTime = DateTime.Now;
-            manager.CreateWindows(samples, M, N, R, selectedWindow);
-            manager.LowPassFIlter(L, fc, N, selectedWindow);
-            for (int i = 0; i < manager.listOfWindows.Count; ++i)
+            managerTime.CreateWindows(samples, M, N, R, selectedWindow);
+            managerTime.LowPassFIlter(L, fc, N, selectedWindow);
+            for (int i = 0; i < managerTime.listOfWindows.Count; ++i)
             {
-                manager.listOfWindows[i] = manager.Time(manager.listOfWindows[i], L);
+                managerTime.listOfWindows[i] = managerTime.Time(managerTime.listOfWindows[i], L);
             }
-            manager.AddTime(R, samples.Count);
+            managerTime.AddTime(R, samples.Count);
 
-            for (int i = 0; i < manager.result.Count; ++i)
+            for (int i = 0; i < managerTime.result.Count; ++i)
             {
-                chart4.Series["wave"].Points.Add(manager.result[i]);
+                chart4.Series["wave"].Points.Add(managerTime.result[i]);
             }
             DateTime stopTime = DateTime.Now;
             TimeSpan diff = stopTime - startTime;
