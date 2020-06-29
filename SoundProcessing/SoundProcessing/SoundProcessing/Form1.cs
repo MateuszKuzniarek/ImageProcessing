@@ -493,7 +493,7 @@ namespace SoundProcessing
             DateTime startTime = DateTime.Now;
             manager.CreateWindows(samples, M, N, R, selectedWindow);
             manager.LowPassFIlter(L, fc, N, selectedWindow);
-            for(int i = 0; i < manager.listOfWindows.Count; ++i)
+            for (int i = 0; i < manager.listOfWindows.Count; ++i)
             {
                 manager.listOfWindows[i] = manager.Time(manager.listOfWindows[i], L);
             }
@@ -517,22 +517,24 @@ namespace SoundProcessing
             manager.Fill0Coefficients();
             List<Complex> wCoefficients = CalculateWCoefficients(manager.listOfComplexCoefficients.Count, false);
             List<Complex> wCoefficientsWindows = CalculateWCoefficients(manager.listOfComplexWindows[0].Count, false);
-            
+
             manager.listOfComplexCoefficients =  CalculateFastTransform(manager.listOfComplexCoefficients, wCoefficients, 0);
 
-
-            for(int i = 0; i < manager.listOfComplexWindows.Count; ++i)
+            for (int i = 0; i < manager.listOfComplexWindows.Count; ++i)
             {
                 manager.listOfComplexWindows[i] = CalculateFastTransform(manager.listOfComplexWindows[i], wCoefficientsWindows, 0);
             }
             manager.MultiplySpectrum();
 
 
-            List<Complex> wReverseCoefficients = CalculateWCoefficients(manager.resultComplexWindows[0].Count, true);
-            for(int i = 0; i < manager.resultComplexWindows.Count; ++i)
+            List<Complex> wReverseCoefficients = CalculateWCoefficients(manager.listOfComplexWindows[0].Count, true);
+            for (int i = 0; i < manager.resultComplexWindows.Count; ++i)
             {
-                manager.listOfComplexWindows[i] = CalculateFastTransform(manager.resultComplexWindows[i], wReverseCoefficients, 0);
+                manager.resultComplexWindows[i] = CalculateFastTransform(manager.resultComplexWindows[i], wReverseCoefficients, 0);
+                Complex divisor = new Complex(manager.resultComplexWindows[i].Count, 0);
+                manager.resultComplexWindows[i] = manager.resultComplexWindows[i].Select(x => x = Complex.Divide(x, divisor)).ToList();
             }
+
             manager.AddReal(M, R, samples.Count);
             for (int i = 0; i < manager.result.Count; ++i)
             {

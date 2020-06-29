@@ -74,6 +74,7 @@ namespace SoundProcessing.Exercise4
             }
             return result;
         }
+
         public void CreateWindows(List<double> samples, int M, int N, int R, string selectedWindow)
         {
             int numberOfSamples = findPower2(N);
@@ -118,7 +119,7 @@ namespace SoundProcessing.Exercise4
         {
             for(int i = 0; i < L; ++i)
             {
-                double value = 1.0*(2 * fc) / 44100.0;
+                double value = 1.0 * (2 * fc) / 44100.0;
                 int center = (L - 1) / 2;
                 if (i == center)
                 {
